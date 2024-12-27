@@ -58,10 +58,31 @@
             border: 1px solid #444;
             border-radius: 5px;
             padding: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .preset-list.visible {
+            display: block;
+            opacity: 1;
         }
         .preset-list button {
             display: block;
             margin: 5px 0;
+        }
+        .notification {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            display: none;
+        }
+        .notification.show {
+            display: block;
         }
     </style>
 </head>
@@ -75,7 +96,7 @@
     </div>
 
     <button onclick="decrementar()">Atirar</button>
-    <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
+    <button id="rajada-button" onclick="rajada()" style="display:none; margin-top: 10px;">Rajada</button>
     <button onclick="restaurar()">Recarregar</button>
 
     <div class="input-container">
@@ -102,6 +123,8 @@
         </div>
     </div>
 
+    <div class="notification" id="notification"></div>
+
     <script>
         let contadorAtual = 0;
         let maximo = 0;
@@ -112,18 +135,35 @@
             document.getElementById("maximo").textContent = maximo;
         }
 
+        function showNotification(message) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show");
+            setTimeout(() => notification.classList.remove("show"), 30000);
+        }
+
         function decrementar() {
             if (contadorAtual > 0) {
                 contadorAtual--;
                 atualizarDisplay();
+
+                if (contadorAtual === 0) {
+                    showNotification("Você precisa gastar uma ação de movimento para recarregar");
+                }
             }
         }
 
         function rajada() {
             if (contadorAtual > 0) {
                 const tiros = Math.min(contadorAtual, 10);
+                const prevContador = contadorAtual;
                 contadorAtual -= tiros;
                 atualizarDisplay();
+
+                const gastos = prevContador - contadorAtual;
+                if (gastos === 20) {
+                    showNotification("Você gastou 20 cartuchos, diminua 1 caixa de munições da sua ficha");
+                }
             }
         }
 
@@ -145,7 +185,7 @@
 
         function togglePresetList() {
             const presetList = document.getElementById("preset-list");
-            presetList.style.display = presetList.style.display === 'none' ? 'block' : 'none';
+            presetList.classList.toggle("visible");
         }
 
         function aplicarPreset(nome, atual, max, cap) {
@@ -154,14 +194,13 @@
             maximo = max;
             capacidade = cap;
 
-            // Atualizar a imagem de acordo com o preset
             const imgElement = document.getElementById("imagem-topo");
             switch (nome) {
                 case 'Pistola':
                     imgElement.src = './pistola.png';
                     break;
                 case 'Revolver':
-                    imgElement.src = 'https://cdn.discordapp.com/attachments/1320288765385773120/1321999516051963985/Black_Powder_Colt_Single_Action_Army_Revolver.jpeg?ex=676f477e&is=676df5fe&hm=4019089e9c326c8fba9132e0845cbea2bc2818640e62c4fefb90ac458a06dfe7&';
+                    imgElement.src = './revolver.png';
                     break;
                 case 'Fuzil de Caça':
                     imgElement.src = './fuzil_de_caca.png';
@@ -189,7 +228,6 @@
             document.getElementById("valor-maximo").value = max;
             atualizarDisplay();
 
-            // Mostrar ou esconder o botão de rajada
             const rajadaButton = document.getElementById("rajada-button");
             if (['Submetralhadora', 'Fuzil de Assalto', 'Metralhadora'].includes(nome)) {
                 rajadaButton.style.display = 'block';
