@@ -12,10 +12,12 @@
             background-color: #121212;
             color: #ffffff;
         }
+
         .contador {
             font-size: 2rem;
             margin: 20px 0;
         }
+
         button {
             font-size: 1rem;
             margin: 5px;
@@ -26,12 +28,15 @@
             border: 1px solid #444;
             border-radius: 5px;
         }
+
         button:hover {
             background-color: #555;
         }
+
         .input-container {
             margin: 20px 0;
         }
+
         input[type="number"] {
             font-size: 1rem;
             width: 60px;
@@ -40,15 +45,18 @@
             background-color: #222;
             color: #fff;
         }
+
         .top-image {
             width: 350px;
             margin-bottom: auto;
         }
+
         .preset-button {
             position: absolute;
             top: 10px;
             right: 10px;
         }
+
         .preset-list {
             display: none;
             position: absolute;
@@ -58,58 +66,48 @@
             border: 1px solid #444;
             border-radius: 5px;
             padding: 10px;
-            animation-duration: 0.3s;
         }
-        .preset-list.animate-open {
-            animation-name: openPresets;
-        }
-        .preset-list.animate-close {
-            animation-name: closePresets;
-        }
-        @keyframes openPresets {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes closePresets {
-            from {
-                opacity: 1;
-                transform: scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #444;
+
+        .preset-list button {
+            display: none;
+            background-color: #333;
             color: #fff;
-            padding: 10px 20px;
-            border: 1px solid #555;
+            border: 1px solid #444;
             border-radius: 5px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 5px 10px;
+            margin: 5px 0;
+            animation-duration: 0.3s;
+            animation-fill-mode: forwards;
         }
-        .notification button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
+
+        .preset-list button.animate-pop {
+            animation-name: popIn;
         }
-        .notification button:hover {
-            color: #f00;
+
+        .preset-list button.animate-remove {
+            animation-name: popOut;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes popOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.9);
+            }
         }
     </style>
 </head>
@@ -122,10 +120,8 @@
         <p id="arma">Vazio</p>
     </div>
 
-    <div>
-        <button onclick="decrementar()">Atirar</button>
-        <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
-    </div>
+    <button onclick="decrementar()">Atirar</button>
+    <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
     <button onclick="restaurar()">Recarregar</button>
 
     <div class="input-container">
@@ -152,12 +148,11 @@
         </div>
     </div>
 
-    <div id="notification-container"></div>
-
     <script>
         let contadorAtual = 0;
         let maximo = 0;
         let capacidade = 0;
+        let presetsOpen = false;
 
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
@@ -167,9 +162,6 @@
         function decrementar() {
             if (contadorAtual > 0) {
                 contadorAtual--;
-                if (contadorAtual === 0) {
-                    mostrarNotificacao("Você precisa gastar uma ação de movimento para recarregar");
-                }
                 atualizarDisplay();
             }
         }
@@ -178,12 +170,6 @@
             if (contadorAtual > 0) {
                 const tiros = Math.min(contadorAtual, 10);
                 contadorAtual -= tiros;
-                maximo -= tiros;
-
-                if (tiros === 20) {
-                    mostrarNotificacao("Você gastou 20 cartuchos. Diminua 1 caixa de munições da sua ficha.");
-                }
-
                 atualizarDisplay();
             }
         }
@@ -206,13 +192,28 @@
 
         function togglePresetList() {
             const presetList = document.getElementById("preset-list");
-            if (presetList.style.display === 'none' || !presetList.style.display) {
-                presetList.classList.add("animate-open");
-                presetList.style.display = 'block';
+            const buttons = presetList.querySelectorAll("button");
+
+            if (!presetsOpen) {
+                presetList.style.display = "block";
+                buttons.forEach((button, index) => {
+                    setTimeout(() => {
+                        button.style.display = "block";
+                        button.classList.add("animate-pop");
+                        button.classList.remove("animate-remove");
+                    }, index * 100);
+                });
             } else {
-                presetList.classList.add("animate-close");
-                setTimeout(() => presetList.style.display = 'none', 300);
+                buttons.forEach((button, index) => {
+                    setTimeout(() => {
+                        button.classList.remove("animate-pop");
+                        button.classList.add("animate-remove");
+                        setTimeout(() => (button.style.display = "none"), 300);
+                    }, (buttons.length - index - 1) * 100);
+                });
+                setTimeout(() => (presetList.style.display = "none"), buttons.length * 100);
             }
+            presetsOpen = !presetsOpen;
         }
 
         function aplicarPreset(nome, atual, max, cap) {
@@ -220,23 +221,29 @@
             contadorAtual = atual;
             maximo = max;
             capacidade = cap;
+
+            const imgElement = document.getElementById("imagem-topo");
+            switch (nome) {
+                case 'Pistola':
+                    imgElement.src = './pistola.png';
+                    break;
+                case 'Revolver':
+                    imgElement.src = './revolver.png';
+                    break;
+                default:
+                    imgElement.src = './padrao.png';
+            }
+
+            document.getElementById("valor-atual").value = atual;
+            document.getElementById("valor-maximo").value = max;
             atualizarDisplay();
 
             const rajadaButton = document.getElementById("rajada-button");
-            rajadaButton.style.display = ['Submetralhadora', 'Fuzil de Assalto', 'Metralhadora'].includes(nome) ? 'block' : 'none';
-        }
-
-        function mostrarNotificacao(mensagem) {
-            const container = document.getElementById("notification-container");
-            const notificacao = document.createElement("div");
-            notificacao.className = "notification";
-            notificacao.innerHTML = `${mensagem} <button onclick="fecharNotificacao(this)">X</button>`;
-            container.appendChild(notificacao);
-            setTimeout(() => notificacao.remove(), 30000);
-        }
-
-        function fecharNotificacao(botao) {
-            botao.parentElement.remove();
+            if (['Submetralhadora', 'Fuzil de Assalto', 'Metralhadora'].includes(nome)) {
+                rajadaButton.style.display = 'block';
+            } else {
+                rajadaButton.style.display = 'none';
+            }
         }
     </script>
 </body>
