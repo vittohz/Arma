@@ -35,19 +35,38 @@
             width: 100px;
             margin-bottom: 20px;
         }
+        .presets {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-align: left;
+        }
+        .preset-buttons {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .preset-buttons button {
+            width: 150px;
+        }
+        .rajada-btn {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <img src="https://cdn.discordapp.com/attachments/1320288765385773120/1321999516051963985/Black_Powder_Colt_Single_Action_Army_Revolver.jpeg?ex=676f477e&is=676df5fe&hm=4019089e9c326c8fba9132e0845cbea2bc2818640e62c4fefb90ac458a06dfe7&" 
+    <img src="https://cdn.discordapp.com/attachments/1320288765385773120/1321999516051963985/Black_Powder_Colt_Single_Action_Army_Revolver.jpeg" 
          alt="Topo" class="top-image" id="imagem-topo">
     <h1>Contador Dinâmico</h1>
-    
+
     <div class="contador">
         <span id="contador-atual">6</span>/<span id="maximo">40</span>
         <p id="arma">Arma</p>
     </div>
 
     <button onclick="decrementar()">Atirar</button>
+    <button onclick="rajada()" id="rajada-btn" class="rajada-btn">Rajada</button>
     <button onclick="restaurar()">Recarregar</button>
 
     <div class="input-container">
@@ -65,6 +84,20 @@
         <button>Enviar Imagem</button>
     </label>
 
+    <div class="presets">
+        <button onclick="togglePresets()">Presets</button>
+        <div id="preset-buttons" class="preset-buttons">
+            <button onclick="aplicarPreset('Pistola', 12, 20)">Pistola</button>
+            <button onclick="aplicarPreset('Revolver', 6, 20)">Revolver</button>
+            <button onclick="aplicarPreset('Fuzil de Caça', 4, 20)">Fuzil de Caça</button>
+            <button onclick="aplicarPreset('Submetralhadora', 20, 20)">Submetralhadora</button>
+            <button onclick="aplicarPreset('Espingarda', 6, 20)">Espingarda</button>
+            <button onclick="aplicarPreset('Fuzil de Assalto', 30, 20)">Fuzil de Assalto</button>
+            <button onclick="aplicarPreset('Fuzil de Precisão', 1, 20)">Fuzil de Precisão</button>
+            <button onclick="aplicarPreset('Metralhadora', 50, 20)">Metralhadora</button>
+        </div>
+    </div>
+
     <script>
         let contadorAtual = 6;
         let maximo = 40;
@@ -72,6 +105,9 @@
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
             document.getElementById("maximo").textContent = maximo;
+            const rajadaBtn = document.getElementById("rajada-btn");
+            const arma = document.getElementById("arma").textContent;
+            rajadaBtn.style.display = (arma === 'Submetralhadora' || arma === 'Fuzil de Assalto' || arma === 'Metralhadora') ? 'inline-block' : 'none';
         }
 
         function decrementar() {
@@ -79,6 +115,12 @@
                 contadorAtual--;
                 atualizarDisplay();
             }
+        }
+
+        function rajada() {
+            const tiros = Math.min(10, contadorAtual);
+            contadorAtual -= tiros;
+            atualizarDisplay();
         }
 
         function restaurar() {
@@ -109,6 +151,18 @@
                 };
                 reader.readAsDataURL(input.files[0]);
             }
+        }
+
+        function togglePresets() {
+            const presets = document.getElementById("preset-buttons");
+            presets.style.display = presets.style.display === "flex" ? "none" : "flex";
+        }
+
+        function aplicarPreset(nome, atual, max) {
+            document.getElementById("arma").textContent = nome;
+            contadorAtual = atual;
+            maximo = max;
+            atualizarDisplay();
         }
     </script>
 </body>
