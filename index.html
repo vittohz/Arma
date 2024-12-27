@@ -116,6 +116,48 @@
             gap: 10px;
             margin-bottom: 10px;
         }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #222;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        .notification button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -148,14 +190,11 @@
         <div class="preset-list" id="preset-list">
             <button onclick="aplicarPreset('Pistola', 12, 40, 12)">Pistola</button>
             <button onclick="aplicarPreset('Revolver', 6, 40, 6)">Revolver</button>
-            <button onclick="aplicarPreset('Fuzil de Caça', 4, 40, 4)">Fuzil de Caça</button>
             <button onclick="aplicarPreset('Submetralhadora', 20, 40, 20)">Submetralhadora</button>
-            <button onclick="aplicarPreset('Espingarda', 6, 40, 6)">Espingarda</button>
-            <button onclick="aplicarPreset('Fuzil de Assalto', 30, 40, 30)">Fuzil de Assalto</button>
-            <button onclick="aplicarPreset('Fuzil de Precisão', 1, 40, 1)">Fuzil de Precisão</button>
-            <button onclick="aplicarPreset('Metralhadora', 50, 40, 50)">Metralhadora</button>
         </div>
     </div>
+
+    <div id="notificacoes"></div>
 
     <script>
         let contadorAtual = 0;
@@ -172,6 +211,9 @@
             if (contadorAtual > 0) {
                 contadorAtual--;
                 atualizarDisplay();
+                if (contadorAtual === 0) {
+                    criarNotificacao("Sem munição no pente!");
+                }
             }
         }
 
@@ -180,6 +222,9 @@
                 const tiros = Math.min(contadorAtual, 10);
                 contadorAtual -= tiros;
                 atualizarDisplay();
+                if (contadorAtual === 0) {
+                    criarNotificacao("Você gastou toda a munição do pente!");
+                }
             }
         }
 
@@ -232,27 +277,39 @@
             capacidade = cap;
 
             const imgElement = document.getElementById("imagem-topo");
-            switch (nome) {
-                case 'Pistola':
-                    imgElement.src = './pistola.png';
-                    break;
-                case 'Revolver':
-                    imgElement.src = './revolver.png';
-                    break;
-                default:
-                    imgElement.src = './padrao.png';
-            }
+            imgElement.src = `./${nome.toLowerCase()}.png`;
 
             document.getElementById("valor-atual").value = atual;
             document.getElementById("valor-maximo").value = max;
             atualizarDisplay();
 
             const rajadaButton = document.getElementById("rajada-button");
-            if (['Submetralhadora', 'Fuzil de Assalto', 'Metralhadora'].includes(nome)) {
+            if (['Submetralhadora'].includes(nome)) {
                 rajadaButton.style.display = 'block';
             } else {
                 rajadaButton.style.display = 'none';
             }
+        }
+
+        function criarNotificacao(texto) {
+            const notificacao = document.createElement("div");
+            notificacao.className = "notification";
+            notificacao.innerHTML = `
+                <span>${texto}</span>
+                <button onclick="fecharNotificacao(this)">X</button>
+            `;
+            document.getElementById("notificacoes").appendChild(notificacao);
+
+            setTimeout(() => {
+                notificacao.style.animation = "fadeOut 0.5s forwards";
+                setTimeout(() => notificacao.remove(), 500);
+            }, 3000);
+        }
+
+        function fecharNotificacao(botao) {
+            const notificacao = botao.parentElement;
+            notificacao.style.animation = "fadeOut 0.5s forwards";
+            setTimeout(() => notificacao.remove(), 500);
         }
     </script>
 </body>
