@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Dinâmico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .contador {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+        button {
+            font-size: 1rem;
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .input-container {
+            margin: 20px 0;
+        }
+        input {
+            font-size: 1rem;
+            width: 60px;
+            text-align: center;
+        }
+        .top-image {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://cdn.discordapp.com/attachments/1320288765385773120/1321999516051963985/Black_Powder_Colt_Single_Action_Army_Revolver.jpeg?ex=676f477e&is=676df5fe&hm=4019089e9c326c8fba9132e0845cbea2bc2818640e62c4fefb90ac458a06dfe7&" alt="Topo" class="top-image">
+    <h1>Contador Dinâmico</h1>
+    
+    <div class="contador">
+        <span id="contador-atual">6</span>/<span id="maximo">40</span>
+        <p id="arma">Arma</p>
+    </div>
+
+    <button onclick="decrementar()">Atirar</button>
+    <button onclick="restaurar()">Recarregar</button>
+
+    <div class="input-container">
+        <label for="valor-atual">Munições no Pente:</label>
+        <input type="number" id="valor-atual" value="6">
+
+        <label for="valor-maximo">Cartuchos:</label>
+        <input type="number" id="valor-maximo" value="40">
+
+        <button onclick="atualizarValores()">Atualizar</button>
+    </div>
+
+    <script>
+        let contadorAtual = 6;
+        let maximo = 40;
+
+        function atualizarDisplay() {
+            document.getElementById("contador-atual").textContent = contadorAtual;
+            document.getElementById("maximo").textContent = maximo;
+        }
+
+        function decrementar() {
+            if (contadorAtual > 0) {
+                contadorAtual--;
+                atualizarDisplay();
+            }
+        }
+
+        function restaurar() {
+            const valorInicial = parseInt(document.getElementById("valor-atual").value);
+            const diferenca = valorInicial - contadorAtual;
+            if (diferenca <= maximo) {
+                contadorAtual = valorInicial;
+                maximo -= diferenca;
+                atualizarDisplay();
+            }
+        }
+
+        function atualizarValores() {
+            const novoAtual = parseInt(document.getElementById("valor-atual").value);
+            const novoMaximo = parseInt(document.getElementById("valor-maximo").value);
+            contadorAtual = novoAtual;
+            maximo = novoMaximo;
+            atualizarDisplay();
+        }
+    </script>
+</body>
+</html>
