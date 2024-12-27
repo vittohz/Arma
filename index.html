@@ -9,6 +9,8 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
+            background-color: #121212;
+            color: #ffffff;
         }
         .contador {
             font-size: 2rem;
@@ -19,14 +21,13 @@
             margin: 5px;
             padding: 10px;
             cursor: pointer;
-            border: none;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
             border-radius: 5px;
-            background-color: #007BFF;
-            color: white;
-            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #555;
         }
         .input-container {
             margin: 20px 0;
@@ -35,46 +36,46 @@
             font-size: 1rem;
             width: 60px;
             text-align: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 5px;
+            border: 1px solid #444;
+            background-color: #222;
+            color: #fff;
         }
         .top-image {
             width: 100px;
             margin-bottom: 20px;
         }
-        .preset-buttons {
-            display: none;
-            flex-direction: column;
-            align-items: flex-end;
-            position: absolute;
-            top: 50px;
-            right: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .preset-toggle {
+        .preset-button {
             position: absolute;
             top: 10px;
             right: 10px;
         }
+        .preset-list {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #222;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .preset-list button {
+            display: block;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
-    <img src="https://cdn.discordapp.com/attachments/1320288765385773120/1321999516051963985/Black_Powder_Colt_Single_Action_Army_Revolver.jpeg" 
-         alt="Topo" class="top-image" id="imagem-topo">
+    <img src="./padrao.png" alt="Topo" class="top-image" id="imagem-topo">
     <h1>Contador Dinâmico</h1>
 
     <div class="contador">
         <span id="contador-atual">0</span>/<span id="maximo">0</span>
-        <p id="arma">Nenhuma</p>
+        <p id="arma">Vazio</p>
     </div>
 
     <button onclick="decrementar()">Atirar</button>
-    <button onclick="rajada()" id="rajada-btn" style="display:none;">Rajada</button>
+    <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
     <button onclick="restaurar()">Recarregar</button>
 
     <div class="input-container">
@@ -87,10 +88,9 @@
         <button onclick="atualizarValores()">Atualizar</button>
     </div>
 
-    <div class="preset-toggle">
-        <button onclick="togglePresets()">Presets</button>
-        <div id="preset-buttons" class="preset-buttons">
-            <button onclick="aplicarPreset('Nenhuma', 0, 0, 0)">Nenhuma</button>
+    <div class="preset-button">
+        <button onclick="togglePresetList()">Presets</button>
+        <div class="preset-list" id="preset-list">
             <button onclick="aplicarPreset('Pistola', 12, 40, 12)">Pistola</button>
             <button onclick="aplicarPreset('Revolver', 6, 40, 6)">Revolver</button>
             <button onclick="aplicarPreset('Fuzil de Caça', 4, 40, 4)">Fuzil de Caça</button>
@@ -110,11 +110,6 @@
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
             document.getElementById("maximo").textContent = maximo;
-            const rajadaBtn = document.getElementById("rajada-btn");
-            const arma = document.getElementById("arma").textContent;
-            rajadaBtn.style.display = (arma === 'Submetralhadora' || arma === 'Fuzil de Assalto' || arma === 'Metralhadora') ? 'inline-block' : 'none';
-            document.getElementById("valor-atual").value = contadorAtual;
-            document.getElementById("valor-maximo").value = maximo;
         }
 
         function decrementar() {
@@ -126,21 +121,17 @@
 
         function rajada() {
             if (contadorAtual > 0) {
-                const tiros = Math.min(10, contadorAtual);
+                const tiros = Math.min(contadorAtual, 10);
                 contadorAtual -= tiros;
                 atualizarDisplay();
             }
         }
 
         function restaurar() {
-            const diferenca = capacidade - contadorAtual;
-            if (maximo >= diferenca) {
-                maximo -= diferenca;
-                contadorAtual = capacidade;
-            } else {
-                contadorAtual += maximo;
-                maximo = 0;
-            }
+            const falta = capacidade - contadorAtual;
+            const recarga = Math.min(falta, maximo);
+            contadorAtual += recarga;
+            maximo -= recarga;
             atualizarDisplay();
         }
 
@@ -149,13 +140,12 @@
             const novoMaximo = parseInt(document.getElementById("valor-maximo").value);
             contadorAtual = novoAtual;
             maximo = novoMaximo;
-            capacidade = novoAtual;
             atualizarDisplay();
         }
 
-        function togglePresets() {
-            const presets = document.getElementById("preset-buttons");
-            presets.style.display = presets.style.display === "flex" ? "none" : "flex";
+        function togglePresetList() {
+            const presetList = document.getElementById("preset-list");
+            presetList.style.display = presetList.style.display === 'none' ? 'block' : 'none';
         }
 
         function aplicarPreset(nome, atual, max, cap) {
@@ -163,11 +153,50 @@
             contadorAtual = atual;
             maximo = max;
             capacidade = cap;
-            atualizarDisplay();
-        }
 
-        // Inicializar com o preset vazio
-        aplicarPreset('Nenhuma', 0, 0, 0);
+            // Atualizar a imagem de acordo com o preset
+            const imgElement = document.getElementById("imagem-topo");
+            switch (nome) {
+                case 'Pistola':
+                    imgElement.src = './pistola.png';
+                    break;
+                case 'Revolver':
+                    imgElement.src = 'https://cdn.discordapp.com/attachments/1320288765385773120/1321999516051963985/Black_Powder_Colt_Single_Action_Army_Revolver.jpeg?ex=676f477e&is=676df5fe&hm=4019089e9c326c8fba9132e0845cbea2bc2818640e62c4fefb90ac458a06dfe7&';
+                    break;
+                case 'Fuzil de Caça':
+                    imgElement.src = './fuzil_de_caca.png';
+                    break;
+                case 'Submetralhadora':
+                    imgElement.src = './submetralhadora.png';
+                    break;
+                case 'Espingarda':
+                    imgElement.src = './espingarda.png';
+                    break;
+                case 'Fuzil de Assalto':
+                    imgElement.src = './fuzil_de_assalto.png';
+                    break;
+                case 'Fuzil de Precisão':
+                    imgElement.src = './fuzil_de_precisao.png';
+                    break;
+                case 'Metralhadora':
+                    imgElement.src = './metralhadora.png';
+                    break;
+                default:
+                    imgElement.src = './padrao.png';
+            }
+
+            document.getElementById("valor-atual").value = atual;
+            document.getElementById("valor-maximo").value = max;
+            atualizarDisplay();
+
+            // Mostrar ou esconder o botão de rajada
+            const rajadaButton = document.getElementById("rajada-button");
+            if (['Submetralhadora', 'Fuzil de Assalto', 'Metralhadora'].includes(nome)) {
+                rajadaButton.style.display = 'block';
+            } else {
+                rajadaButton.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
