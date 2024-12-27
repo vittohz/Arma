@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contador de Tiros</title>
+    <title>Contador Dinâmico</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +44,11 @@
             border: 1px solid #444;
             background-color: #222;
             color: #fff;
+        }
+
+        .top-image {
+            width: 350px;
+            margin-bottom: auto;
         }
 
         .preset-button {
@@ -156,7 +161,8 @@
     </style>
 </head>
 <body>
-    <h1>Contador de Tiros</h1>
+    <img src="./padrao.png" alt="Topo" class="top-image" id="imagem-topo">
+    <h1>Contador Dinâmico</h1>
 
     <div class="contador">
         <span id="contador-atual">0</span>/<span id="maximo">0</span>
