@@ -35,23 +35,10 @@
             width: 100px;
             margin-bottom: 20px;
         }
-        .presets {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            text-align: left;
-        }
         .preset-buttons {
             display: none;
             flex-direction: column;
-            gap: 5px;
-            margin-top: 10px;
-        }
-        .preset-buttons button {
-            width: 150px;
-        }
-        .rajada-btn {
-            display: none;
+            align-items: center;
         }
     </style>
 </head>
@@ -62,11 +49,11 @@
 
     <div class="contador">
         <span id="contador-atual">6</span>/<span id="maximo">40</span>
-        <p id="arma">Arma</p>
+        <p id="arma">Revolver</p>
     </div>
 
     <button onclick="decrementar()">Atirar</button>
-    <button onclick="rajada()" id="rajada-btn" class="rajada-btn">Rajada</button>
+    <button onclick="rajada()" id="rajada-btn" style="display:none;">Rajada</button>
     <button onclick="restaurar()">Recarregar</button>
 
     <div class="input-container">
@@ -87,20 +74,21 @@
     <div class="presets">
         <button onclick="togglePresets()">Presets</button>
         <div id="preset-buttons" class="preset-buttons">
-            <button onclick="aplicarPreset('Pistola', 12, 20)">Pistola</button>
-            <button onclick="aplicarPreset('Revolver', 6, 20)">Revolver</button>
-            <button onclick="aplicarPreset('Fuzil de Caça', 4, 20)">Fuzil de Caça</button>
-            <button onclick="aplicarPreset('Submetralhadora', 20, 20)">Submetralhadora</button>
-            <button onclick="aplicarPreset('Espingarda', 6, 20)">Espingarda</button>
-            <button onclick="aplicarPreset('Fuzil de Assalto', 30, 20)">Fuzil de Assalto</button>
-            <button onclick="aplicarPreset('Fuzil de Precisão', 1, 20)">Fuzil de Precisão</button>
-            <button onclick="aplicarPreset('Metralhadora', 50, 20)">Metralhadora</button>
+            <button onclick="aplicarPreset('Pistola', 12, 20, 12)">Pistola</button>
+            <button onclick="aplicarPreset('Revolver', 6, 20, 6)">Revolver</button>
+            <button onclick="aplicarPreset('Fuzil de Caça', 4, 20, 4)">Fuzil de Caça</button>
+            <button onclick="aplicarPreset('Submetralhadora', 20, 20, 20)">Submetralhadora</button>
+            <button onclick="aplicarPreset('Espingarda', 6, 20, 6)">Espingarda</button>
+            <button onclick="aplicarPreset('Fuzil de Assalto', 30, 20, 30)">Fuzil de Assalto</button>
+            <button onclick="aplicarPreset('Fuzil de Precisão', 1, 20, 1)">Fuzil de Precisão</button>
+            <button onclick="aplicarPreset('Metralhadora', 50, 20, 50)">Metralhadora</button>
         </div>
     </div>
 
     <script>
         let contadorAtual = 6;
         let maximo = 40;
+        let capacidade = 6;
 
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
@@ -118,19 +106,23 @@
         }
 
         function rajada() {
-            const tiros = Math.min(10, contadorAtual);
-            contadorAtual -= tiros;
-            atualizarDisplay();
+            if (contadorAtual > 0) {
+                const tiros = Math.min(10, contadorAtual);
+                contadorAtual -= tiros;
+                atualizarDisplay();
+            }
         }
 
         function restaurar() {
-            const valorInicial = parseInt(document.getElementById("valor-atual").value);
-            const diferenca = valorInicial - contadorAtual;
-            if (diferenca <= maximo) {
-                contadorAtual = valorInicial;
+            const diferenca = capacidade - contadorAtual;
+            if (maximo >= diferenca) {
                 maximo -= diferenca;
-                atualizarDisplay();
+                contadorAtual = capacidade;
+            } else {
+                contadorAtual += maximo;
+                maximo = 0;
             }
+            atualizarDisplay();
         }
 
         function atualizarValores() {
@@ -138,18 +130,21 @@
             const novoMaximo = parseInt(document.getElementById("valor-maximo").value);
             contadorAtual = novoAtual;
             maximo = novoMaximo;
+            capacidade = novoAtual;
             atualizarDisplay();
         }
 
         function atualizarImagem() {
             const input = document.getElementById("upload-imagem");
             const imgElement = document.getElementById("imagem-topo");
+
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imgElement.src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
+                const file = input.files[0];
+                const imageUrl = URL.createObjectURL(file);
+                imgElement.src = imageUrl;
+
+                // Limpar o URL criado após o uso
+                imgElement.onload = () => URL.revokeObjectURL(imageUrl);
             }
         }
 
@@ -158,10 +153,11 @@
             presets.style.display = presets.style.display === "flex" ? "none" : "flex";
         }
 
-        function aplicarPreset(nome, atual, max) {
+        function aplicarPreset(nome, atual, max, cap) {
             document.getElementById("arma").textContent = nome;
             contadorAtual = atual;
             maximo = max;
+            capacidade = cap;
             atualizarDisplay();
         }
     </script>
