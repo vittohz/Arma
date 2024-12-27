@@ -109,6 +109,13 @@
                 transform: translateY(-10px) scale(0.9);
             }
         }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -120,9 +127,11 @@
         <p id="arma">Vazio</p>
     </div>
 
-    <button onclick="decrementar()">Atirar</button>
-    <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
-    <button onclick="restaurar()">Recarregar</button>
+    <div class="button-container">
+        <button onclick="decrementar()">Atirar</button>
+        <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
+        <button onclick="restaurar()">Recarregar</button>
+    </div>
 
     <div class="input-container">
         <label for="valor-atual">Munições no Pente:</label>
