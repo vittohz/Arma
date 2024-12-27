@@ -19,6 +19,14 @@
             margin: 5px;
             padding: 10px;
             cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         .input-container {
             margin: 20px 0;
@@ -27,9 +35,9 @@
             font-size: 1rem;
             width: 60px;
             text-align: center;
-        }
-        input[type="file"] {
-            display: none;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
         }
         .top-image {
             width: 100px;
@@ -38,7 +46,20 @@
         .preset-buttons {
             display: none;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-end;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .preset-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
     </style>
 </head>
@@ -48,8 +69,8 @@
     <h1>Contador Dinâmico</h1>
 
     <div class="contador">
-        <span id="contador-atual">6</span>/<span id="maximo">40</span>
-        <p id="arma">Revolver</p>
+        <span id="contador-atual">0</span>/<span id="maximo">0</span>
+        <p id="arma">Nenhuma</p>
     </div>
 
     <button onclick="decrementar()">Atirar</button>
@@ -58,37 +79,33 @@
 
     <div class="input-container">
         <label for="valor-atual">Munições no Pente:</label>
-        <input type="number" id="valor-atual" value="6">
+        <input type="number" id="valor-atual" value="0">
 
         <label for="valor-maximo">Cartuchos:</label>
-        <input type="number" id="valor-maximo" value="40">
+        <input type="number" id="valor-maximo" value="0">
 
         <button onclick="atualizarValores()">Atualizar</button>
     </div>
 
-    <input type="file" id="upload-imagem" accept="image/*" onchange="atualizarImagem()">
-    <label for="upload-imagem">
-        <button>Enviar Imagem</button>
-    </label>
-
-    <div class="presets">
+    <div class="preset-toggle">
         <button onclick="togglePresets()">Presets</button>
         <div id="preset-buttons" class="preset-buttons">
-            <button onclick="aplicarPreset('Pistola', 12, 20, 12)">Pistola</button>
-            <button onclick="aplicarPreset('Revolver', 6, 20, 6)">Revolver</button>
-            <button onclick="aplicarPreset('Fuzil de Caça', 4, 20, 4)">Fuzil de Caça</button>
-            <button onclick="aplicarPreset('Submetralhadora', 20, 20, 20)">Submetralhadora</button>
-            <button onclick="aplicarPreset('Espingarda', 6, 20, 6)">Espingarda</button>
-            <button onclick="aplicarPreset('Fuzil de Assalto', 30, 20, 30)">Fuzil de Assalto</button>
-            <button onclick="aplicarPreset('Fuzil de Precisão', 1, 20, 1)">Fuzil de Precisão</button>
-            <button onclick="aplicarPreset('Metralhadora', 50, 20, 50)">Metralhadora</button>
+            <button onclick="aplicarPreset('Nenhuma', 0, 0, 0)">Nenhuma</button>
+            <button onclick="aplicarPreset('Pistola', 12, 40, 12)">Pistola</button>
+            <button onclick="aplicarPreset('Revolver', 6, 40, 6)">Revolver</button>
+            <button onclick="aplicarPreset('Fuzil de Caça', 4, 40, 4)">Fuzil de Caça</button>
+            <button onclick="aplicarPreset('Submetralhadora', 20, 40, 20)">Submetralhadora</button>
+            <button onclick="aplicarPreset('Espingarda', 6, 40, 6)">Espingarda</button>
+            <button onclick="aplicarPreset('Fuzil de Assalto', 30, 40, 30)">Fuzil de Assalto</button>
+            <button onclick="aplicarPreset('Fuzil de Precisão', 1, 40, 1)">Fuzil de Precisão</button>
+            <button onclick="aplicarPreset('Metralhadora', 50, 40, 50)">Metralhadora</button>
         </div>
     </div>
 
     <script>
-        let contadorAtual = 6;
-        let maximo = 40;
-        let capacidade = 6;
+        let contadorAtual = 0;
+        let maximo = 0;
+        let capacidade = 0;
 
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
@@ -96,6 +113,8 @@
             const rajadaBtn = document.getElementById("rajada-btn");
             const arma = document.getElementById("arma").textContent;
             rajadaBtn.style.display = (arma === 'Submetralhadora' || arma === 'Fuzil de Assalto' || arma === 'Metralhadora') ? 'inline-block' : 'none';
+            document.getElementById("valor-atual").value = contadorAtual;
+            document.getElementById("valor-maximo").value = maximo;
         }
 
         function decrementar() {
@@ -134,20 +153,6 @@
             atualizarDisplay();
         }
 
-        function atualizarImagem() {
-            const input = document.getElementById("upload-imagem");
-            const imgElement = document.getElementById("imagem-topo");
-
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                const imageUrl = URL.createObjectURL(file);
-                imgElement.src = imageUrl;
-
-                // Limpar o URL criado após o uso
-                imgElement.onload = () => URL.revokeObjectURL(imageUrl);
-            }
-        }
-
         function togglePresets() {
             const presets = document.getElementById("preset-buttons");
             presets.style.display = presets.style.display === "flex" ? "none" : "flex";
@@ -160,6 +165,9 @@
             capacidade = cap;
             atualizarDisplay();
         }
+
+        // Inicializar com o preset vazio
+        aplicarPreset('Nenhuma', 0, 0, 0);
     </script>
 </body>
 </html>
