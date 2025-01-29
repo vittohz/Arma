@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contador de Tiros</title>
+    <title>Site de Testes do Vitao :)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -82,7 +82,7 @@
         }
 
         .preset-list {
-            display: block;
+            display: none;
             background-color: #222;
             border: 1px solid #444;
             border-radius: 5px;
@@ -95,6 +95,13 @@
             display: block;
             width: 100%;
             margin: 5px 0;
+            opacity: 0;
+            animation: cascadeIn 0.3s forwards;
+        }
+
+        @keyframes cascadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .notification {
@@ -151,7 +158,7 @@
 </head>
 <body>
     <div class="main-menu" id="main-menu">
-        <h1>Contador de Tiros</h1>
+        <h1>Site de Testes do Vitao :)</h1>
         <button onclick="startApp('contador')">Contador de Tiros</button>
         <button disabled>Atualizações Futuramente</button>
     </div>
@@ -159,7 +166,7 @@
     <div id="app" style="display: none;">
         <span class="back-button" onclick="backToMainMenu()">←</span>
         <img src="https://cdn.discordapp.com/attachments/1322344643630858381/1322433444424454204/op-logo.png?ex=6781565e&is=678004de&hm=2c385d6a1cb696740e65b9b60b0f709c55565fa20e9d73801c5a2818612c96e5&" alt="Topo" class="top-image" id="imagem-topo">
-        <h1>Contador De Tiros</h1>
+        <h1>Site de Testes do Vitao :)</h1>
 
         <div class="contador">
             <span id="contador-atual">0</span>/<span id="maximo">0</span>
@@ -296,7 +303,20 @@
 
         function togglePresetList() {
             const presetList = document.getElementById("preset-list");
-            presetList.style.display = presetsOpen ? "none" : "block";
+            if (presetsOpen) {
+                presetList.style.animation = "fadeOut 0.5s forwards";
+                setTimeout(() => {
+                    presetList.style.display = "none";
+                }, 500);
+            } else {
+                presetList.style.display = "block";
+                const buttons = presetList.querySelectorAll('button');
+                buttons.forEach((button, index) => {
+                    setTimeout(() => {
+                        button.style.opacity = 1;
+                    }, index * 100);
+                });
+            }
             presetsOpen = !presetsOpen;
         }
 
