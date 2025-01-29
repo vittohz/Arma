@@ -287,24 +287,27 @@
             }
         }
 
-        function togglePresetList() {
-            const presetList = document.getElementById("preset-list");
-            if (presetsOpen) {
-                presetList.style.animation = "fadeOut 0.5s forwards";
-                setTimeout(() => {
-                    presetList.style.display = "none";
-                }, 500);
-            } else {
-                presetList.style.display = "block";
-                const buttons = presetList.querySelectorAll('button');
-                buttons.forEach((button, index) => {
-                    setTimeout(() => {
-                        button.style.opacity = 1;
-                    }, index * 100);
-                });
-            }
-            presetsOpen = !presetsOpen;
-        }
+function togglePresetList() {
+    const presetList = document.getElementById("preset-list");
+    if (presetsOpen) {
+        // Fecha com animação
+        presetList.style.animation = "fadeOut 0.5s forwards";
+        setTimeout(() => {
+            presetList.style.display = "none";
+        }, 500); // Espera a animação terminar antes de ocultar
+    } else {
+        // Abre com animação
+        presetList.style.display = "block";
+        presetList.style.animation = "fadeIn 0.5s forwards";
+        const buttons = presetList.querySelectorAll('button');
+        buttons.forEach((button, index) => {
+            setTimeout(() => {
+                button.style.opacity = 1;
+            }, index * 100); // Efeito cascata
+        });
+    }
+    presetsOpen = !presetsOpen;
+}
 
         function aplicarPreset(nome, atual, max, cap, imagem) {
             document.getElementById("arma").textContent = nome;
