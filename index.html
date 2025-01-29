@@ -82,10 +82,7 @@
         }
 
         .preset-list {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 0;
+            display: block;
             background-color: #222;
             border: 1px solid #444;
             border-radius: 5px;
@@ -142,15 +139,25 @@
             padding: 15px 30px;
             font-size: 1.2rem;
         }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="main-menu" id="main-menu">
         <h1>Contador de Tiros</h1>
-        <button onclick="startApp()">Iniciar</button>
+        <button onclick="startApp('contador')">Contador de Tiros</button>
+        <button disabled>Atualizações Futuramente</button>
     </div>
 
     <div id="app" style="display: none;">
+        <span class="back-button" onclick="backToMainMenu()">←</span>
         <img src="https://cdn.discordapp.com/attachments/1322344643630858381/1322433444424454204/op-logo.png?ex=6781565e&is=678004de&hm=2c385d6a1cb696740e65b9b60b0f709c55565fa20e9d73801c5a2818612c96e5&" alt="Topo" class="top-image" id="imagem-topo">
         <h1>Contador De Tiros</h1>
 
@@ -194,10 +201,18 @@
         let capacidade = 0;
         let presetsOpen = false;
 
-        function startApp() {
+        function startApp(mode) {
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('app').style.display = 'block';
-            carregarEstado();
+            if (mode === 'contador') {
+                carregarEstado();
+                aplicarPreset('Pistola', 12, 40, 12, 'https://imgur.com/zU5uY3A');
+            }
+        }
+
+        function backToMainMenu() {
+            document.getElementById('main-menu').style.display = 'flex';
+            document.getElementById('app').style.display = 'none';
         }
 
         function salvarEstado() {
@@ -218,6 +233,7 @@
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
             document.getElementById("maximo").textContent = maximo;
+            document.title = `${document.getElementById('arma').textContent} | ${contadorAtual}/${maximo}`;
             salvarEstado();
         }
 
