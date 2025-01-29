@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,25 +8,44 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            padding: 20px;
             background-color: #121212;
             color: #ffffff;
         }
 
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .top-image {
+            width: 100%;
+            max-width: 350px;
+            margin-bottom: 20px;
+        }
+
         .contador {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin: 20px 0;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         button {
             font-size: 1rem;
-            margin: 5px;
-            padding: 10px;
+            padding: 10px 20px;
             cursor: pointer;
             background-color: #333;
             color: #fff;
-            border: 1px solid #444;
+            border: none;
             border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
@@ -39,82 +58,36 @@
 
         input[type="number"] {
             font-size: 1rem;
-            width: 60px;
+            width: 80px;
+            padding: 5px;
             text-align: center;
             border: 1px solid #444;
             background-color: #222;
             color: #fff;
-        }
-
-        .top-image {
-            width: 350px;
-            margin-bottom: auto;
+            border-radius: 5px;
         }
 
         .preset-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            position: relative;
+            margin-bottom: 20px;
         }
 
         .preset-list {
             display: none;
             position: absolute;
-            top: 50px;
-            right: 10px;
+            top: 40px;
+            right: 0;
             background-color: #222;
             border: 1px solid #444;
             border-radius: 5px;
             padding: 10px;
+            z-index: 1;
         }
 
         .preset-list button {
-            display: none;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 5px 10px;
+            display: block;
+            width: 100%;
             margin: 5px 0;
-            animation-duration: 0.3s;
-            animation-fill-mode: forwards;
-        }
-
-        .preset-list button.animate-pop {
-            animation-name: popIn;
-        }
-
-        .preset-list button.animate-remove {
-            animation-name: popOut;
-        }
-
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes popOut {
-            from {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-10px) scale(0.9);
-            }
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
         }
 
         .notification {
@@ -124,39 +97,20 @@
             transform: translateX(-50%);
             background-color: #222;
             color: #fff;
-            padding: 15px;
+            padding: 10px 20px;
             border-radius: 5px;
             border: 1px solid #444;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             animation: fadeIn 0.5s;
         }
 
-        .notification button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
     </style>
 </head>
@@ -173,14 +127,15 @@
         <button onclick="decrementar()">Atirar</button>
         <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
         <button onclick="restaurar()">Recarregar</button>
+        <button onclick="zerar()">Zerar</button>
     </div>
 
     <div class="input-container">
         <label for="valor-atual">Munições no Pente:</label>
-        <input type="number" id="valor-atual" value="0">
+        <input type="number" id="valor-atual" value="0" min="0">
 
         <label for="valor-maximo">Cartuchos:</label>
-        <input type="number" id="valor-maximo" value="0">
+        <input type="number" id="valor-maximo" value="0" min="0">
 
         <button onclick="atualizarValores()">Atualizar</button>
     </div>
@@ -214,6 +169,8 @@
                 if (contadorAtual === 0) {
                     criarNotificacao("Sem munição no pente!");
                 }
+            } else {
+                criarNotificacao("Pente vazio!");
             }
         }
 
@@ -225,6 +182,8 @@
                 if (contadorAtual === 0) {
                     criarNotificacao("Você gastou toda a munição do pente!");
                 }
+            } else {
+                criarNotificacao("Pente vazio!");
             }
         }
 
@@ -234,39 +193,35 @@
             contadorAtual += recarga;
             maximo -= recarga;
             atualizarDisplay();
+            if (recarga > 0) {
+                criarNotificacao(`Recarregado com ${recarga} munições!`);
+            } else {
+                criarNotificacao("Sem munição para recarregar!");
+            }
+        }
+
+        function zerar() {
+            contadorAtual = 0;
+            maximo = 0;
+            atualizarDisplay();
+            criarNotificacao("Contador zerado!");
         }
 
         function atualizarValores() {
             const novoAtual = parseInt(document.getElementById("valor-atual").value);
             const novoMaximo = parseInt(document.getElementById("valor-maximo").value);
-            contadorAtual = novoAtual;
-            maximo = novoMaximo;
-            atualizarDisplay();
+            if (!isNaN(novoAtual) && !isNaN(novoMaximo)) {
+                contadorAtual = novoAtual;
+                maximo = novoMaximo;
+                atualizarDisplay();
+            } else {
+                criarNotificacao("Valores inválidos!");
+            }
         }
 
         function togglePresetList() {
             const presetList = document.getElementById("preset-list");
-            const buttons = presetList.querySelectorAll("button");
-
-            if (!presetsOpen) {
-                presetList.style.display = "block";
-                buttons.forEach((button, index) => {
-                    setTimeout(() => {
-                        button.style.display = "block";
-                        button.classList.add("animate-pop");
-                        button.classList.remove("animate-remove");
-                    }, index * 100);
-                });
-            } else {
-                buttons.forEach((button, index) => {
-                    setTimeout(() => {
-                        button.classList.remove("animate-pop");
-                        button.classList.add("animate-remove");
-                        setTimeout(() => (button.style.display = "none"), 300);
-                    }, (buttons.length - index - 1) * 100);
-                });
-                setTimeout(() => (presetList.style.display = "none"), buttons.length * 100);
-            }
+            presetList.style.display = presetsOpen ? "none" : "block";
             presetsOpen = !presetsOpen;
         }
 
@@ -276,19 +231,12 @@
             maximo = max;
             capacidade = cap;
 
-            const imgElement = document.getElementById("imagem-topo");
-            imgElement.src = 'https://cdn.discordapp.com/attachments/1320288765385773120/1322025350838095894/op-logo.png?ex=676f5f8d&is=676e0e0d&hm=aecf811c6febae1532d87c1b66a8a9dbb70423ae1acc9f310caf0a0ed60a5872&';
-
             document.getElementById("valor-atual").value = atual;
             document.getElementById("valor-maximo").value = max;
             atualizarDisplay();
 
             const rajadaButton = document.getElementById("rajada-button");
-            if (['Submetralhadora'].includes(nome)) {
-                rajadaButton.style.display = 'block';
-            } else {
-                rajadaButton.style.display = 'none';
-            }
+            rajadaButton.style.display = ['Submetralhadora'].includes(nome) ? 'block' : 'none';
         }
 
         function criarNotificacao(texto) {
