@@ -9,24 +9,29 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: #121212;
             color: #ffffff;
+            overflow: hidden;
         }
 
         h1 {
             margin-bottom: 20px;
+            font-size: 2.5rem;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .top-image {
             width: 100%;
             max-width: 350px;
             margin-bottom: 20px;
+            animation: slideIn 1s ease-in-out;
         }
 
         .contador {
             font-size: 2.5rem;
             margin: 20px 0;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         .button-container {
@@ -35,6 +40,7 @@
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            animation: fadeIn 2s ease-in-out;
         }
 
         button {
@@ -45,15 +51,17 @@
             color: #fff;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         button:hover {
             background-color: #555;
+            transform: scale(1.05);
         }
 
         .input-container {
             margin: 20px 0;
+            animation: fadeIn 2.5s ease-in-out;
         }
 
         input[type="number"] {
@@ -70,6 +78,7 @@
         .preset-button {
             position: relative;
             margin-bottom: 20px;
+            animation: fadeIn 3s ease-in-out;
         }
 
         .preset-list {
@@ -82,6 +91,7 @@
             border-radius: 5px;
             padding: 10px;
             z-index: 1;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .preset-list button {
@@ -108,48 +118,75 @@
             to { opacity: 1; }
         }
 
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
         }
+
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .main-menu button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
-    <img src="https://cdn.discordapp.com/attachments/1322344643630858381/1322433444424454204/op-logo.png?ex=6781565e&is=678004de&hm=2c385d6a1cb696740e65b9b60b0f709c55565fa20e9d73801c5a2818612c96e5&" alt="Topo" class="top-image" id="imagem-topo">
-    <h1>Contador De Tiros</h1>
-
-    <div class="contador">
-        <span id="contador-atual">0</span>/<span id="maximo">0</span>
-        <p id="arma">Vazio</p>
+    <div class="main-menu" id="main-menu">
+        <h1>Contador de Tiros</h1>
+        <button onclick="startApp()">Iniciar</button>
     </div>
 
-    <div class="button-container">
-        <button onclick="decrementar()">Atirar</button>
-        <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
-        <button onclick="restaurar()">Recarregar</button>
-        <button onclick="zerar()">Zerar</button>
-    </div>
+    <div id="app" style="display: none;">
+        <img src="https://cdn.discordapp.com/attachments/1322344643630858381/1322433444424454204/op-logo.png?ex=6781565e&is=678004de&hm=2c385d6a1cb696740e65b9b60b0f709c55565fa20e9d73801c5a2818612c96e5&" alt="Topo" class="top-image" id="imagem-topo">
+        <h1>Contador De Tiros</h1>
 
-    <div class="input-container">
-        <label for="valor-atual">Munições no Pente:</label>
-        <input type="number" id="valor-atual" value="0" min="0">
-
-        <label for="valor-maximo">Cartuchos:</label>
-        <input type="number" id="valor-maximo" value="0" min="0">
-
-        <button onclick="atualizarValores()">Atualizar</button>
-    </div>
-
-    <div class="preset-button">
-        <button onclick="togglePresetList()">Presets</button>
-        <div class="preset-list" id="preset-list">
-            <button onclick="aplicarPreset('Pistola', 12, 40, 12)">Pistola</button>
-            <button onclick="aplicarPreset('Revolver', 6, 40, 6)">Revolver</button>
-            <button onclick="aplicarPreset('Submetralhadora', 20, 40, 20)">Submetralhadora</button>
+        <div class="contador">
+            <span id="contador-atual">0</span>/<span id="maximo">0</span>
+            <p id="arma">Vazio</p>
         </div>
-    </div>
 
-    <div id="notificacoes"></div>
+        <div class="button-container">
+            <button onclick="decrementar()">Atirar</button>
+            <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
+            <button onclick="restaurar()">Recarregar</button>
+            <button onclick="zerar()">Zerar</button>
+        </div>
+
+        <div class="input-container">
+            <label for="valor-atual">Munições no Pente:</label>
+            <input type="number" id="valor-atual" value="0" min="0">
+
+            <label for="valor-maximo">Cartuchos:</label>
+            <input type="number" id="valor-maximo" value="0" min="0">
+
+            <button onclick="atualizarValores()">Atualizar</button>
+        </div>
+
+        <div class="preset-button">
+            <button onclick="togglePresetList()">Presets</button>
+            <div class="preset-list" id="preset-list">
+                <button onclick="aplicarPreset('Pistola', 12, 40, 12, 'https://exemplo.com/pistola.png')">Pistola</button>
+                <button onclick="aplicarPreset('Revolver', 6, 40, 6, 'https://exemplo.com/revolver.png')">Revolver</button>
+                <button onclick="aplicarPreset('Submetralhadora', 20, 40, 20, 'https://exemplo.com/smg.png')">Submetralhadora</button>
+            </div>
+        </div>
+
+        <div id="notificacoes"></div>
+    </div>
 
     <script>
         let contadorAtual = 0;
@@ -157,9 +194,31 @@
         let capacidade = 0;
         let presetsOpen = false;
 
+        function startApp() {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            carregarEstado();
+        }
+
+        function salvarEstado() {
+            localStorage.setItem('contadorAtual', contadorAtual);
+            localStorage.setItem('maximo', maximo);
+            localStorage.setItem('capacidade', capacidade);
+            localStorage.setItem('arma', document.getElementById('arma').textContent);
+        }
+
+        function carregarEstado() {
+            contadorAtual = parseInt(localStorage.getItem('contadorAtual')) || 0;
+            maximo = parseInt(localStorage.getItem('maximo')) || 0;
+            capacidade = parseInt(localStorage.getItem('capacidade')) || 0;
+            document.getElementById('arma').textContent = localStorage.getItem('arma') || 'Vazio';
+            atualizarDisplay();
+        }
+
         function atualizarDisplay() {
             document.getElementById("contador-atual").textContent = contadorAtual;
             document.getElementById("maximo").textContent = maximo;
+            salvarEstado();
         }
 
         function decrementar() {
@@ -225,7 +284,7 @@
             presetsOpen = !presetsOpen;
         }
 
-        function aplicarPreset(nome, atual, max, cap) {
+        function aplicarPreset(nome, atual, max, cap, imagem) {
             document.getElementById("arma").textContent = nome;
             contadorAtual = atual;
             maximo = max;
@@ -233,6 +292,7 @@
 
             document.getElementById("valor-atual").value = atual;
             document.getElementById("valor-maximo").value = max;
+            document.getElementById("imagem-topo").src = imagem;
             atualizarDisplay();
 
             const rajadaButton = document.getElementById("rajada-button");
