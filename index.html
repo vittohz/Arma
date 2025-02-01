@@ -221,7 +221,158 @@
     </div>
 
     <script>
-        // Código JavaScript aqui (mesmo do seu exemplo original)
+        let contadorAtual = 0;
+        let maximo = 0;
+        let capacidade = 0;
+        let presetsOpen = false;
+
+        function startApp(mode) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            if (mode === 'contador') {
+                carregarEstado();
+                aplicarPreset('Pistola', 12, 40, 12, 'https://imgur.com/zU5uY3A');
+            }
+        }
+
+        function backToMainMenu() {
+            document.getElementById('main-menu').style.display = 'flex';
+            document.getElementById('app').style.display = 'none';
+        }
+
+        function salvarEstado() {
+            localStorage.setItem('contadorAtual', contadorAtual);
+            localStorage.setItem('maximo', maximo);
+            localStorage.setItem('capacidade', capacidade);
+            localStorage.setItem('arma', document.getElementById('arma').textContent);
+        }
+
+        function carregarEstado() {
+            contadorAtual = parseInt(localStorage.getItem('contadorAtual')) || 0;
+            maximo = parseInt(localStorage.getItem('maximo')) || 0;
+            capacidade = parseInt(localStorage.getItem('capacidade')) || 0;
+            document.getElementById('arma').textContent = localStorage.getItem('arma') || 'Vazio';
+            atualizarDisplay();
+        }
+
+        function atualizarDisplay() {
+            document.getElementById("contador-atual").textContent = contadorAtual;
+            document.getElementById("maximo").textContent = maximo;
+            document.title = `${document.getElementById('arma').textContent} | ${contadorAtual}/${maximo}`;
+            salvarEstado();
+        }
+
+        function decrementar() {
+            if (contadorAtual > 0) {
+                contadorAtual--;
+                atualizarDisplay();
+                if (contadorAtual === 0) {
+                    criarNotificacao("Sem munição no pente!");
+                }
+            } else {
+                criarNotificacao("Pente vazio!");
+            }
+        }
+
+        function rajada() {
+            if (contadorAtual > 0) {
+                const tiros = Math.min(contadorAtual, 10);
+                contadorAtual -= tiros;
+                atualizarDisplay();
+                if (contadorAtual === 0) {
+                    criarNotificacao("Você gastou toda a munição do pente!");
+                }
+            } else {
+                criarNotificacao("Pente vazio!");
+            }
+        }
+
+        function restaurar() {
+            const falta = capacidade - contadorAtual;
+            const recarga = Math.min(falta, maximo);
+            contadorAtual += recarga;
+            maximo -= recarga;
+            atualizarDisplay();
+            if (recarga > 0) {
+                criarNotificacao(`Recarregado com ${recarga} munições!`);
+            } else {
+                criarNotificacao("Sem munição para recarregar!");
+            }
+        }
+
+        function zerar() {
+            contadorAtual = 0;
+            maximo = 0;
+            atualizarDisplay();
+            criarNotificacao("Contador zerado!");
+        }
+
+        function atualizarValores() {
+            const novoAtual = parseInt(document.getElementById("valor-atual").value);
+            const novoMaximo = parseInt(document.getElementById("valor-maximo").value);
+            if (!isNaN(novoAtual) && !isNaN(novoMaximo)) {
+                contadorAtual = novoAtual;
+                maximo = novoMaximo;
+                atualizarDisplay();
+            } else {
+                criarNotificacao("Valores inválidos!");
+            }
+        }
+
+        function togglePresetList() {
+            const presetList = document.getElementById("preset-list");
+            if (presetsOpen) {
+                presetList.style.animation = "fadeOut 0.5s forwards";
+                setTimeout(() => {
+                    presetList.style.display = "none";
+                }, 500);
+            } else {
+                presetList.style.display = "block";
+                presetList.style.animation = "fadeIn 0.5s forwards";
+                const buttons = presetList.querySelectorAll('button');
+                buttons.forEach((button, index) => {
+                    setTimeout(() => {
+                        button.style.opacity = 1;
+                    }, index * 100);
+                });
+            }
+            presetsOpen = !presetsOpen;
+        }
+
+        function aplicarPreset(nome, atual, max, cap, imagem) {
+            document.getElementById("arma").textContent = nome;
+            contadorAtual = atual;
+            maximo = max;
+            capacidade = cap;
+
+            document.getElementById("valor-atual").value = atual;
+            document.getElementById("valor-maximo").value = max;
+            atualizarDisplay();
+
+            const rajadaButton = document.getElementById("rajada-button");
+            rajadaButton.style.display = ['Submetralhadora'].includes(nome) ? 'block' : 'none';
+        }
+
+        function criarNotificacao(texto) {
+            const notificacao = document.createElement("div");
+            notificacao.className = "notification";
+            notificacao.innerHTML = `
+                <span>${texto}</span>
+                <button onclick="fecharNotificacao(this)">X</button>
+            `;
+            document.getElementById("notificacoes").appendChild(notificacao);
+
+            setTimeout(() => {
+                notificacao.style.animation = "fadeOut 0.5s forwards";
+                setTimeout(() => notificacao.remove(), 500);
+            }, 3000);
+        }
+
+        function fecharNotificacao(botao) {
+            const notificacao = botao.parentElement;
+            notificacao.style.animation = "fadeOut 0.5s forwards";
+            setTimeout(() => notificacao.remove(), 500);
+        }
     </script>
 </body>
 </html>
