@@ -754,4 +754,246 @@
         }
 
         function carregarFicha() {
-            if (appState.ficha.nome
+            if (appState.ficha.nome) {
+                document.getElementById('char-nome').value = appState.ficha.nome || '';
+                document.getElementById('char-nivel').value = appState.ficha.nivel || 1;
+                document.getElementById('hp-atual').value = appState.ficha.hpAtual || 100;
+                document.getElementById('hp-max').value = appState.ficha.hpMax || 100;
+                document.getElementById('mp-atual').value = appState.ficha.mpAtual || 50;
+                document.getElementById('mp-max').value = appState.ficha.mpMax || 50;
+                document.getElementById('forca').value = appState.ficha.forca || 10;
+                document.getElementById('destreza').value = appState.ficha.destreza || 10;
+                document.getElementById('inteligencia').value = appState.ficha.inteligencia || 10;
+                
+                updateResourceBar('hp');
+                updateResourceBar('mp');
+            }
+        }
+
+        // === INVENTÁRIO ===
+        function adicionarItem() {
+            const nome = document.getElementById('novo-item').value.trim();
+            const quantidade = parseInt(document.getElementById('item-quantidade').value);
+            
+            if (nome && quantidade > 0) {
+                const itemExistente = appState.inventario.find(item => item.nome === nome);
+                
+                if (itemExistente) {
+                    itemExistente.quantidade += quantidade;
+                } else {
+                    appState.inventario.push({ nome, quantidade, id: Date.now() });
+                }
+                
+                document.getElementById('novo-item').value = '';
+                document.getElementById('item-quantidade').value = 1;
+                atualizarInventario();
+                salvarDados();
+                criarNotificacao(`${nome} adicionado ao inventário!`);
+            }
+        }
+
+        function removerItem(id) {
+            appState.inventario = appState.inventario.filter(item => item.id !== id);
+            atualizarInventario();
+            salvarDados();
+        }
+
+        function alterarQuantidade(id, novaQuantidade) {
+            const item = appState.inventario.find(item => item.id === id);
+            if (item && novaQuantidade > 0) {
+                item.quantidade = novaQuantidade;
+                salvarDados();
+            } else if (novaQuantidade <= 0) {
+                removerItem(id);
+            }
+        }
+
+        function atualizarInventario() {
+            const lista = document.getElementById('lista-inventario');
+            lista.innerHTML = '';
+            
+            appState.inventario.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <h3>${item.nome}</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <input type="number" value="${item.quantidade}" min="0" 
+                               onchange="alterarQuantidade(${item.id}, this.value)"
+                               style="width: 60px;">
+                        <button onclick="removerItem(${item.id})" 
+                                style="background: #e74c3c; padding: 5px 10px;">❌</button>
+                    </div>
+                `;
+                lista.appendChild(card);
+            });
+            
+            if (appState.inventario.length === 0) {
+                lista.innerHTML = '<p style="text-align: center; color: #888;">Inventário vazio</p>';
+            }
+        }
+
+        // === NOTAS ===
+        function salvarNota() {
+            const titulo = document.getElementById('titulo-nota').value.trim();
+            const conteudo = document.getElementById('conteudo-nota').value.trim();
+            
+            if (titulo && conteudo) {
+                const nota = {
+                    id: Date.now(),
+                    titulo,
+                    conteudo,
+                    data: new Date().toLocaleString('pt-BR')
+                };
+                
+                appState.notas.unshift(nota);
+                document.getElementById('titulo-nota').value = '';
+                document.getElementById('conteudo-nota').value = '';
+                atualizarNotas();
+                salvarDados();
+                criarNotificacao('Nota salva com sucesso!');
+            }
+        }
+
+        function removerNota(id) {
+            appState.notas = appState.notas.filter(nota => nota.id !== id);
+            atualizarNotas();
+            salvarDados();
+        }
+
+        function editarNota(id) {
+            const nota = appState.notas.find(n => n.id === id);
+            if (nota) {
+                document.getElementById('titulo-nota').value = nota.titulo;
+                document.getElementById('conteudo-nota').value = nota.conteudo;
+                removerNota(id);
+            }
+        }
+
+        function atualizarNotas() {
+            const lista = document.getElementById('lista-notas');
+            lista.innerHTML = '';
+            
+            appState.notas.forEach(nota => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <h3>${nota.titulo}</h3>
+                    <p style="color: #888; font-size: 0.9em;">${nota.data}</p>
+                    <p style="margin: 10px 0; max-height: 100px; overflow-y: auto;">${nota.conteudo}</p>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button onclick="editarNota(${nota.id})" 
+                                style="background: #3498db; padding: 5px 10px;">✏️</button>
+                        <button onclick="removerNota(${nota.id})" 
+                                style="background: #e74c3c; padding: 5px 10px;">🗑️</button>
+                    </div>
+                `;
+                lista.appendChild(card);
+            });
+            
+            if (appState.notas.length === 0) {
+                lista.innerHTML = '<p style="text-align: center; color: #888;">Nenhuma nota salva</p>';
+            }
+        }
+
+        // === CALCULADORA DE DANO ===
+        function calcularDano() {
+            const formula = document.getElementById('formula-dano').value.trim();
+            if (!formula) return;
+            
+            try {
+                const resultado = processarFormulaDano(formula);
+                document.getElementById('resultado-dano').innerHTML = 
+                    `<strong>${formula}: ${resultado.detalhes} = ${resultado.total}</strong>`;
+            } catch (e) {
+                document.getElementById('resultado-dano').innerHTML = 
+                    '<span style="color: #e74c3c;">Fórmula inválida!</span>';
+            }
+        }
+
+        function usarFormula(formula) {
+            document.getElementById('formula-dano').value = formula;
+            calcularDano();
+        }
+
+        function processarFormulaDano(formula) {
+            // Remove espaços e converte para minúsculo
+            formula = formula.replace(/\s/g, '').toLowerCase();
+            
+            let total = 0;
+            let detalhes = [];
+            
+            // Processa dados (ex: 2d6, 1d8, etc.)
+            const dadosRegex = /(\d*)d(\d+)/g;
+            let match;
+            let formulaProcessada = formula;
+            
+            while ((match = dadosRegex.exec(formula)) !== null) {
+                const numDados = parseInt(match[1]) || 1;
+                const ladosDado = parseInt(match[2]);
+                let somaDados = 0;
+                let resultadosDados = [];
+                
+                for (let i = 0; i < numDados; i++) {
+                    const resultado = Math.floor(Math.random() * ladosDado) + 1;
+                    resultadosDados.push(resultado);
+                    somaDados += resultado;
+                }
+                
+                detalhes.push(`${numDados}d${ladosDado}[${resultadosDados.join(',')}]`);
+                formulaProcessada = formulaProcessada.replace(match[0], somaDados);
+                total += somaDados;
+            }
+            
+            // Processa modificadores (+ ou -)
+            const modRegex = /([+-]\d+)/g;
+            let modMatch;
+            while ((modMatch = modRegex.exec(formula)) !== null) {
+                const mod = parseInt(modMatch[1]);
+                total += mod;
+                detalhes.push(modMatch[1]);
+            }
+            
+            return {
+                total: total,
+                detalhes: detalhes.join(' ')
+            };
+        }
+
+        // === NOTIFICAÇÕES ===
+        function criarNotificacao(texto) {
+            const notificacao = document.createElement("div");
+            notificacao.className = "notification";
+            notificacao.innerHTML = `
+                <span>${texto}</span>
+                <button onclick="fecharNotificacao(this)" style="background: none; border: none; color: #fff; margin-left: 10px; cursor: pointer;">✕</button>
+            `;
+            document.getElementById("notificacoes").appendChild(notificacao);
+
+            setTimeout(() => {
+                if (notificacao.parentElement) {
+                    notificacao.style.animation = "slideOut 0.5s forwards";
+                    setTimeout(() => {
+                        if (notificacao.parentElement) {
+                            notificacao.remove();
+                        }
+                    }, 500);
+                }
+            }, 4000);
+        }
+
+        function fecharNotificacao(botao) {
+            const notificacao = botao.parentElement;
+            notificacao.style.animation = "slideOut 0.5s forwards";
+            setTimeout(() => {
+                if (notificacao.parentElement) {
+                    notificacao.remove();
+                }
+            }, 500);
+        }
+
+        // Salvar automaticamente a cada mudança
+        setInterval(salvarDados, 5000);
+    </script>
+</body>
+</html>
