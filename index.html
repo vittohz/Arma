@@ -94,11 +94,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .menu-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         .back-button {
             position: absolute;
             top: 20px;
@@ -168,105 +163,91 @@
             text-align: center;
         }
 
-        /* Dados */
-        .dice-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
+        /* Anotações */
+        .note-input-area {
             margin: 20px 0;
         }
 
-        .dice-button {
-            padding: 20px;
-            font-size: 1.5rem;
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            border-radius: 10px;
-            transition: all 0.3s;
+        .note-input-area input {
+            width: 100%;
+            margin-bottom: 10px;
         }
 
-        .dice-result {
-            font-size: 2rem;
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .note-input-area textarea {
+            width: 100%;
+            height: 150px;
+            background: #222;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 10px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
         }
 
-        /* Ficha de Personagem */
-        .character-sheet {
-            text-align: left;
-            max-width: 600px;
-            margin: 0 auto;
+        .notes-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
         }
 
-        .stat-group {
-            background: rgba(255,255,255,0.05);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        .stat-input {
-            width: 80px;
-        }
-
-        /* HP e Recursos */
-        .resource-bar {
-            background: #333;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 10px 0;
-            position: relative;
-        }
-
-        .resource-fill {
-            height: 100%;
-            transition: width 0.3s;
-            border-radius: 15px;
-        }
-
-        .hp-fill { background: linear-gradient(90deg, #e74c3c, #c0392b); }
-        .mp-fill { background: linear-gradient(90deg, #3498db, #2980b9); }
-
-        .resource-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        /* Inventário */
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .item-card {
+        .note-card {
             background: rgba(255,255,255,0.1);
             padding: 15px;
             border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: left;
             transition: all 0.3s;
         }
 
-        .item-card:hover {
+        .note-card:hover {
             background: rgba(255,255,255,0.15);
             transform: translateY(-2px);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .note-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .note-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .note-content {
+            max-height: 100px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .note-actions button {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9) !important;
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b) !important;
         }
 
         /* Notificações */
@@ -299,15 +280,39 @@
             to { transform: translateX(100%); }
         }
 
-        @keyframes diceRoll {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(90deg); }
-            50% { transform: rotate(180deg); }
-            75% { transform: rotate(270deg); }
+        /* Preset */
+        .preset-dropdown {
+            position: relative;
+            display: inline-block;
         }
 
-        .rolling {
-            animation: diceRoll 0.5s ease-in-out;
+        .preset-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 150px;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .preset-list.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .preset-list button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px 12px;
+            background: #333;
+            border: 1px solid #555;
         }
 
         /* Responsivo */
@@ -316,6 +321,7 @@
             .contador { font-size: 2rem; }
             .button-container { flex-direction: column; }
             .input-container { flex-direction: column; }
+            .menu-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -326,11 +332,7 @@
             <h1>🎲 Site de RPG do Vitao 🎲</h1>
             <div class="menu-grid">
                 <button class="menu-button" onclick="startApp('contador')">🔫 Contador de Tiros</button>
-                <button class="menu-button" onclick="startApp('dados')">🎲 Dados</button>
-                <button class="menu-button" onclick="startApp('ficha')">📋 Ficha de Personagem</button>
-                <button class="menu-button" onclick="startApp('inventario')">🎒 Inventário</button>
-                <button class="menu-button" onclick="startApp('notas')">📝 Notas de Sessão</button>
-                <button class="menu-button" onclick="startApp('calculadora')">🧮 Calculadora de Dano</button>
+                <button class="menu-button" onclick="startApp('notas')">📝 Anotações</button>
             </div>
         </div>
 
@@ -359,9 +361,9 @@
                 <button onclick="atualizarValores()">Atualizar</button>
             </div>
 
-            <div style="position: relative;">
+            <div class="preset-dropdown">
                 <button onclick="togglePresetList()">Presets de Armas</button>
-                <div id="preset-list" style="display: none; position: absolute; top: 40px; left: 50%; transform: translateX(-50%); background: #222; padding: 10px; border-radius: 5px; z-index: 10;">
+                <div class="preset-list" id="preset-list">
                     <button onclick="aplicarPreset('Pistola', 12, 40, 12)">Pistola</button>
                     <button onclick="aplicarPreset('Revolver', 6, 40, 6)">Revolver</button>
                     <button onclick="aplicarPreset('Submetralhadora', 30, 120, 30)">Submetralhadora</button>
@@ -371,164 +373,19 @@
             </div>
         </div>
 
-        <!-- Dados -->
-        <div class="app-container" id="dados-app" style="display: none;">
-            <span class="back-button" onclick="backToMainMenu()">←</span>
-            <h1>🎲 Dados de RPG</h1>
-            
-            <div class="dice-container">
-                <button class="dice-button" onclick="rolarDado(4)">d4</button>
-                <button class="dice-button" onclick="rolarDado(6)">d6</button>
-                <button class="dice-button" onclick="rolarDado(8)">d8</button>
-                <button class="dice-button" onclick="rolarDado(10)">d10</button>
-                <button class="dice-button" onclick="rolarDado(12)">d12</button>
-                <button class="dice-button" onclick="rolarDado(20)">d20</button>
-                <button class="dice-button" onclick="rolarDado(100)">d100</button>
-            </div>
-
-            <div class="input-container">
-                <input type="number" id="num-dados" value="1" min="1" max="10" placeholder="Qtd">
-                <select id="tipo-dado">
-                    <option value="4">d4</option>
-                    <option value="6">d6</option>
-                    <option value="8">d8</option>
-                    <option value="10">d10</option>
-                    <option value="12">d12</option>
-                    <option value="20" selected>d20</option>
-                    <option value="100">d100</option>
-                </select>
-                <input type="number" id="modificador" value="0" placeholder="Mod">
-                <button onclick="rolarPersonalizado()">Rolar</button>
-            </div>
-
-            <div class="dice-result" id="resultado-dados">
-                Clique em um dado para rolar!
-            </div>
-
-            <div id="historico-dados" style="max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; margin-top: 20px;">
-                <strong>Histórico:</strong>
-            </div>
-        </div>
-
-        <!-- Ficha de Personagem -->
-        <div class="app-container" id="ficha-app" style="display: none;">
-            <span class="back-button" onclick="backToMainMenu()">←</span>
-            <h1>📋 Ficha de Personagem</h1>
-            
-            <div class="character-sheet">
-                <div class="stat-group">
-                    <h2>Informações Básicas</h2>
-                    <div class="stat-row">
-                        <label>Nome:</label>
-                        <input type="text" id="char-nome" placeholder="Nome do Personagem">
-                    </div>
-                    <div class="stat-row">
-                        <label>Nível:</label>
-                        <input type="number" id="char-nivel" value="1" min="1" class="stat-input">
-                    </div>
-                </div>
-
-                <div class="stat-group">
-                    <h2>Recursos</h2>
-                    <div class="stat-row">
-                        <label>HP:</label>
-                        <input type="number" id="hp-atual" value="100" min="0" class="stat-input" onchange="updateResourceBar('hp')">
-                        <span>/</span>
-                        <input type="number" id="hp-max" value="100" min="1" class="stat-input" onchange="updateResourceBar('hp')">
-                    </div>
-                    <div class="resource-bar">
-                        <div class="resource-fill hp-fill" id="hp-bar" style="width: 100%;"></div>
-                        <div class="resource-text" id="hp-text">100/100</div>
-                    </div>
-                    
-                    <div class="stat-row">
-                        <label>MP:</label>
-                        <input type="number" id="mp-atual" value="50" min="0" class="stat-input" onchange="updateResourceBar('mp')">
-                        <span>/</span>
-                        <input type="number" id="mp-max" value="50" min="1" class="stat-input" onchange="updateResourceBar('mp')">
-                    </div>
-                    <div class="resource-bar">
-                        <div class="resource-fill mp-fill" id="mp-bar" style="width: 100%;"></div>
-                        <div class="resource-text" id="mp-text">50/50</div>
-                    </div>
-                </div>
-
-                <div class="stat-group">
-                    <h2>Atributos</h2>
-                    <div class="stat-row">
-                        <label>Força:</label>
-                        <input type="number" id="forca" value="10" min="1" max="20" class="stat-input">
-                    </div>
-                    <div class="stat-row">
-                        <label>Destreza:</label>
-                        <input type="number" id="destreza" value="10" min="1" max="20" class="stat-input">
-                    </div>
-                    <div class="stat-row">
-                        <label>Inteligência:</label>
-                        <input type="number" id="inteligencia" value="10" min="1" max="20" class="stat-input">
-                    </div>
-                </div>
-
-                <button onclick="salvarFicha()" style="width: 100%; margin-top: 20px;">Salvar Ficha</button>
-            </div>
-        </div>
-
-        <!-- Inventário -->
-        <div class="app-container" id="inventario-app" style="display: none;">
-            <span class="back-button" onclick="backToMainMenu()">←</span>
-            <h1>🎒 Inventário</h1>
-            
-            <div class="input-container">
-                <input type="text" id="novo-item" placeholder="Nome do item">
-                <input type="number" id="item-quantidade" value="1" min="1" placeholder="Qtd">
-                <button onclick="adicionarItem()">Adicionar Item</button>
-            </div>
-
-            <div class="inventory-grid" id="lista-inventario">
-                <!-- Itens serão adicionados aqui -->
-            </div>
-        </div>
-
-        <!-- Notas -->
+        <!-- Anotações -->
         <div class="app-container" id="notas-app" style="display: none;">
             <span class="back-button" onclick="backToMainMenu()">←</span>
-            <h1>📝 Notas de Sessão</h1>
+            <h1>📝 Anotações</h1>
             
-            <div style="margin: 20px 0;">
-                <input type="text" id="titulo-nota" placeholder="Título da nota" style="width: 100%; margin-bottom: 10px;">
-                <textarea id="conteudo-nota" placeholder="Escreva suas notas aqui..." style="width: 100%; height: 200px; background: #222; color: #fff; border: 1px solid #555; border-radius: 5px; padding: 10px; resize: vertical;"></textarea>
-                <button onclick="salvarNota()" style="width: 100%; margin-top: 10px;">Salvar Nota</button>
+            <div class="note-input-area">
+                <input type="text" id="titulo-nota" placeholder="Título da anotação">
+                <textarea id="conteudo-nota" placeholder="Escreva suas anotações aqui..."></textarea>
+                <button onclick="salvarNota()" style="width: 100%; margin-top: 10px;">Salvar Anotação</button>
             </div>
 
-            <div id="lista-notas">
-                <!-- Notas salvas aparecerão aqui -->
-            </div>
-        </div>
-
-        <!-- Calculadora de Dano -->
-        <div class="app-container" id="calculadora-app" style="display: none;">
-            <span class="back-button" onclick="backToMainMenu()">←</span>
-            <h1>🧮 Calculadora de Dano</h1>
-            
-            <div class="input-container">
-                <input type="text" id="formula-dano" placeholder="Ex: 2d6+3" style="width: 200px;">
-                <button onclick="calcularDano()">Calcular</button>
-            </div>
-
-            <div class="dice-result" id="resultado-dano">
-                Digite uma fórmula de dano (ex: 2d6+3)
-            </div>
-
-            <div style="margin-top: 20px;">
-                <h3>Fórmulas Rápidas:</h3>
-                <div class="button-container">
-                    <button onclick="usarFormula('1d4')">1d4</button>
-                    <button onclick="usarFormula('1d6')">1d6</button>
-                    <button onclick="usarFormula('1d8')">1d8</button>
-                    <button onclick="usarFormula('2d6')">2d6</button>
-                    <button onclick="usarFormula('1d10+2')">1d10+2</button>
-                    <button onclick="usarFormula('2d8+3')">2d8+3</button>
-                </div>
+            <div class="notes-list" id="lista-notas">
+                <!-- Notas aparecerão aqui -->
             </div>
         </div>
     </div>
@@ -536,19 +393,31 @@
     <div id="notificacoes"></div>
 
     <script>
-        // Estado global
-        let appState = {
-            contador: { atual: 0, maximo: 0, capacidade: 0, arma: 'Vazio' },
-            ficha: {},
-            inventario: [],
-            notas: [],
-            historicoDados: []
+        // Estado da aplicação
+        let appData = {
+            contador: {
+                atual: 0,
+                maximo: 0,
+                capacidade: 0,
+                arma: 'Vazio'
+            },
+            notas: []
         };
 
-        // Inicialização
-        window.onload = function() {
+        // Carregar dados ao inicializar
+        window.addEventListener('load', function() {
             carregarDados();
-        };
+        });
+
+        // Salvar dados antes de sair
+        window.addEventListener('beforeunload', function() {
+            salvarDados();
+        });
+
+        // Salvar dados quando a página perde o foco
+        window.addEventListener('blur', function() {
+            salvarDados();
+        });
 
         // Navegação
         function startApp(mode) {
@@ -557,57 +426,55 @@
             
             if (mode === 'contador') {
                 atualizarDisplayContador();
-            } else if (mode === 'ficha') {
-                carregarFicha();
-            } else if (mode === 'inventario') {
-                atualizarInventario();
             } else if (mode === 'notas') {
-                atualizarNotas();
+                atualizarListaNotas();
             }
         }
 
         function backToMainMenu() {
+            salvarDados(); // Salva ao voltar pro menu
             document.querySelectorAll('.app-container').forEach(app => {
                 app.style.display = 'none';
             });
             document.getElementById('main-menu').style.display = 'block';
         }
 
-        // Salvar/Carregar dados
+        // Sistema de dados
         function salvarDados() {
-            try {
-                const dados = JSON.stringify(appState);
-                // Simulando localStorage com variável global
-                window.savedData = dados;
-            } catch (e) {
-                console.log('Erro ao salvar dados');
-            }
+            const dados = JSON.stringify(appData);
+            // Como não podemos usar localStorage, vamos simular com uma variável global
+            window.gameData = dados;
+            console.log('Dados salvos!'); // Para debug
         }
 
         function carregarDados() {
-            try {
-                if (window.savedData) {
-                    appState = JSON.parse(window.savedData);
+            if (window.gameData) {
+                try {
+                    appData = JSON.parse(window.gameData);
+                    console.log('Dados carregados!'); // Para debug
+                } catch (e) {
+                    console.log('Erro ao carregar dados, usando padrão');
                 }
-            } catch (e) {
-                console.log('Erro ao carregar dados');
             }
         }
 
         // === CONTADOR DE TIROS ===
         function atualizarDisplayContador() {
-            document.getElementById("contador-atual").textContent = appState.contador.atual;
-            document.getElementById("maximo").textContent = appState.contador.maximo;
-            document.getElementById("arma").textContent = appState.contador.arma;
-            document.title = `${appState.contador.arma} | ${appState.contador.atual}/${appState.contador.maximo}`;
-            salvarDados();
+            document.getElementById("contador-atual").textContent = appData.contador.atual;
+            document.getElementById("maximo").textContent = appData.contador.maximo;
+            document.getElementById("arma").textContent = appData.contador.arma;
+            document.title = `${appData.contador.arma} | ${appData.contador.atual}/${appData.contador.maximo}`;
+            
+            // Atualiza os inputs também
+            document.getElementById("valor-atual").value = appData.contador.atual;
+            document.getElementById("valor-maximo").value = appData.contador.maximo;
         }
 
         function decrementar() {
-            if (appState.contador.atual > 0) {
-                appState.contador.atual--;
+            if (appData.contador.atual > 0) {
+                appData.contador.atual--;
                 atualizarDisplayContador();
-                if (appState.contador.atual === 0) {
+                if (appData.contador.atual === 0) {
                     criarNotificacao("Sem munição no pente!");
                 }
             } else {
@@ -616,22 +483,26 @@
         }
 
         function rajada() {
-            if (appState.contador.atual > 0) {
-                const tiros = Math.min(appState.contador.atual, 10);
-                appState.contador.atual -= tiros;
+            if (appData.contador.atual > 0) {
+                const tiros = Math.min(appData.contador.atual, 10);
+                appData.contador.atual -= tiros;
                 atualizarDisplayContador();
                 criarNotificacao(`Rajada de ${tiros} tiros!`);
+                if (appData.contador.atual === 0) {
+                    criarNotificacao("Pente vazio após a rajada!");
+                }
             } else {
                 criarNotificacao("Pente vazio!");
             }
         }
 
         function restaurar() {
-            const falta = appState.contador.capacidade - appState.contador.atual;
-            const recarga = Math.min(falta, appState.contador.maximo);
-            appState.contador.atual += recarga;
-            appState.contador.maximo -= recarga;
+            const falta = appData.contador.capacidade - appData.contador.atual;
+            const recarga = Math.min(falta, appData.contador.maximo);
+            appData.contador.atual += recarga;
+            appData.contador.maximo -= recarga;
             atualizarDisplayContador();
+            
             if (recarga > 0) {
                 criarNotificacao(`Recarregado com ${recarga} munições!`);
             } else {
@@ -640,324 +511,116 @@
         }
 
         function zerar() {
-            appState.contador.atual = 0;
-            appState.contador.maximo = 0;
+            appData.contador.atual = 0;
+            appData.contador.maximo = 0;
             atualizarDisplayContador();
             criarNotificacao("Contador zerado!");
         }
 
         function atualizarValores() {
-            const novoAtual = parseInt(document.getElementById("valor-atual").value);
-            const novoMaximo = parseInt(document.getElementById("valor-maximo").value);
-            if (!isNaN(novoAtual) && !isNaN(novoMaximo)) {
-                appState.contador.atual = novoAtual;
-                appState.contador.maximo = novoMaximo;
-                atualizarDisplayContador();
-            }
+            const novoAtual = parseInt(document.getElementById("valor-atual").value) || 0;
+            const novoMaximo = parseInt(document.getElementById("valor-maximo").value) || 0;
+            
+            appData.contador.atual = novoAtual;
+            appData.contador.maximo = novoMaximo;
+            atualizarDisplayContador();
+            criarNotificacao("Valores atualizados!");
         }
 
         function togglePresetList() {
             const list = document.getElementById("preset-list");
-            list.style.display = list.style.display === 'none' ? 'block' : 'none';
+            list.classList.toggle('show');
         }
 
         function aplicarPreset(nome, atual, max, cap) {
-            appState.contador.arma = nome;
-            appState.contador.atual = atual;
-            appState.contador.maximo = max;
-            appState.contador.capacidade = cap;
+            appData.contador = {
+                arma: nome,
+                atual: atual,
+                maximo: max,
+                capacidade: cap
+            };
             
-            document.getElementById("valor-atual").value = atual;
-            document.getElementById("valor-maximo").value = max;
             atualizarDisplayContador();
             
+            // Mostra botão de rajada apenas para submetralhadora
             const rajadaButton = document.getElementById("rajada-button");
-            rajadaButton.style.display = nome === 'Submetralhadora' ? 'block' : 'none';
+            rajadaButton.style.display = nome === 'Submetralhadora' ? 'inline-block' : 'none';
             
-            togglePresetList();
+            // Fecha o dropdown
+            document.getElementById("preset-list").classList.remove('show');
+            criarNotificacao(`${nome} equipada!`);
         }
 
-        // === DADOS ===
-        function rolarDado(lados) {
-            const resultado = Math.floor(Math.random() * lados) + 1;
-            const button = event.target;
-            button.classList.add('rolling');
-            
-            setTimeout(() => {
-                button.classList.remove('rolling');
-                document.getElementById('resultado-dados').innerHTML = 
-                    `<strong>d${lados}: ${resultado}</strong>`;
-                adicionarHistoricoDados(`d${lados}: ${resultado}`);
-            }, 500);
-        }
-
-        function rolarPersonalizado() {
-            const numDados = parseInt(document.getElementById('num-dados').value);
-            const tipoDado = parseInt(document.getElementById('tipo-dado').value);
-            const modificador = parseInt(document.getElementById('modificador').value) || 0;
-            
-            let total = 0;
-            let resultados = [];
-            
-            for (let i = 0; i < numDados; i++) {
-                const resultado = Math.floor(Math.random() * tipoDado) + 1;
-                resultados.push(resultado);
-                total += resultado;
-            }
-            
-            total += modificador;
-            
-            const texto = `${numDados}d${tipoDado}${modificador >= 0 ? '+' + modificador : modificador}: [${resultados.join(', ')}] = ${total}`;
-            document.getElementById('resultado-dados').innerHTML = `<strong>${texto}</strong>`;
-            adicionarHistoricoDados(texto);
-        }
-
-        function adicionarHistoricoDados(texto) {
-            appState.historicoDados.unshift(texto);
-            if (appState.historicoDados.length > 10) {
-                appState.historicoDados.pop();
-            }
-            
-            const historico = document.getElementById('historico-dados');
-            historico.innerHTML = '<strong>Histórico:</strong><br>' + 
-                appState.historicoDados.map(h => `• ${h}`).join('<br>');
-            
-            salvarDados();
-        }
-
-        // === FICHA DE PERSONAGEM ===
-        function updateResourceBar(tipo) {
-            const atual = parseInt(document.getElementById(tipo + '-atual').value);
-            const max = parseInt(document.getElementById(tipo + '-max').value);
-            const porcentagem = (atual / max) * 100;
-            
-            document.getElementById(tipo + '-bar').style.width = porcentagem + '%';
-            document.getElementById(tipo + '-text').textContent = atual + '/' + max;
-            
-            salvarDados();
-        }
-
-        function salvarFicha() {
-            appState.ficha = {
-                nome: document.getElementById('char-nome').value,
-                nivel: document.getElementById('char-nivel').value,
-                hpAtual: document.getElementById('hp-atual').value,
-                hpMax: document.getElementById('hp-max').value,
-                mpAtual: document.getElementById('mp-atual').value,
-                mpMax: document.getElementById('mp-max').value,
-                forca: document.getElementById('forca').value,
-                destreza: document.getElementById('destreza').value,
-                inteligencia: document.getElementById('inteligencia').value
-            };
-            salvarDados();
-            criarNotificacao('Ficha salva com sucesso!');
-        }
-
-        function carregarFicha() {
-            if (appState.ficha.nome) {
-                document.getElementById('char-nome').value = appState.ficha.nome || '';
-                document.getElementById('char-nivel').value = appState.ficha.nivel || 1;
-                document.getElementById('hp-atual').value = appState.ficha.hpAtual || 100;
-                document.getElementById('hp-max').value = appState.ficha.hpMax || 100;
-                document.getElementById('mp-atual').value = appState.ficha.mpAtual || 50;
-                document.getElementById('mp-max').value = appState.ficha.mpMax || 50;
-                document.getElementById('forca').value = appState.ficha.forca || 10;
-                document.getElementById('destreza').value = appState.ficha.destreza || 10;
-                document.getElementById('inteligencia').value = appState.ficha.inteligencia || 10;
-                
-                updateResourceBar('hp');
-                updateResourceBar('mp');
-            }
-        }
-
-        // === INVENTÁRIO ===
-        function adicionarItem() {
-            const nome = document.getElementById('novo-item').value.trim();
-            const quantidade = parseInt(document.getElementById('item-quantidade').value);
-            
-            if (nome && quantidade > 0) {
-                const itemExistente = appState.inventario.find(item => item.nome === nome);
-                
-                if (itemExistente) {
-                    itemExistente.quantidade += quantidade;
-                } else {
-                    appState.inventario.push({ nome, quantidade, id: Date.now() });
-                }
-                
-                document.getElementById('novo-item').value = '';
-                document.getElementById('item-quantidade').value = 1;
-                atualizarInventario();
-                salvarDados();
-                criarNotificacao(`${nome} adicionado ao inventário!`);
-            }
-        }
-
-        function removerItem(id) {
-            appState.inventario = appState.inventario.filter(item => item.id !== id);
-            atualizarInventario();
-            salvarDados();
-        }
-
-        function alterarQuantidade(id, novaQuantidade) {
-            const item = appState.inventario.find(item => item.id === id);
-            if (item && novaQuantidade > 0) {
-                item.quantidade = novaQuantidade;
-                salvarDados();
-            } else if (novaQuantidade <= 0) {
-                removerItem(id);
-            }
-        }
-
-        function atualizarInventario() {
-            const lista = document.getElementById('lista-inventario');
-            lista.innerHTML = '';
-            
-            appState.inventario.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerHTML = `
-                    <h3>${item.nome}</h3>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                        <input type="number" value="${item.quantidade}" min="0" 
-                               onchange="alterarQuantidade(${item.id}, this.value)"
-                               style="width: 60px;">
-                        <button onclick="removerItem(${item.id})" 
-                                style="background: #e74c3c; padding: 5px 10px;">❌</button>
-                    </div>
-                `;
-                lista.appendChild(card);
-            });
-            
-            if (appState.inventario.length === 0) {
-                lista.innerHTML = '<p style="text-align: center; color: #888;">Inventário vazio</p>';
-            }
-        }
-
-        // === NOTAS ===
+        // === ANOTAÇÕES ===
         function salvarNota() {
             const titulo = document.getElementById('titulo-nota').value.trim();
             const conteudo = document.getElementById('conteudo-nota').value.trim();
             
-            if (titulo && conteudo) {
-                const nota = {
-                    id: Date.now(),
-                    titulo,
-                    conteudo,
-                    data: new Date().toLocaleString('pt-BR')
-                };
+            if (!titulo && !conteudo) {
+                criarNotificacao('Adicione um título ou conteúdo!');
+                return;
+            }
+            
+            const nota = {
+                id: Date.now(),
+                titulo: titulo || 'Sem título',
+                conteudo: conteudo || '',
+                data: new Date().toLocaleString('pt-BR')
+            };
+            
+            appData.notas.unshift(nota); // Adiciona no início
+            
+            // Limpa os campos
+            document.getElementById('titulo-nota').value = '';
+            document.getElementById('conteudo-nota').value = '';
+            
+            atualizarListaNotas();
+            criarNotificacao('Anotação salva!');
+        }
+
+        function editarNota(id) {
+            const nota = appData.notas.find(n => n.id === id);
+            if (nota) {
+                document.getElementById('titulo-nota').value = nota.titulo;
+                document.getElementById('conteudo-nota').value = nota.conteudo;
                 
-                appState.notas.unshift(nota);
-                document.getElementById('titulo-nota').value = '';
-                document.getElementById('conteudo-nota').value = '';
-                atualizarNotas();
-                salvarDados();
-                criarNotificacao('Nota salva com sucesso!');
+                // Remove a nota da lista (será re-adicionada quando salvar)
+                appData.notas = appData.notas.filter(n => n.id !== id);
+                atualizarListaNotas();
+                
+                criarNotificacao('Editando anotação...');
             }
         }
 
         function removerNota(id) {
-            appState.notas = appState.notas.filter(nota => nota.id !== id);
-            atualizarNotas();
-            salvarDados();
-        }
-
-        function editarNota(id) {
-            const nota = appState.notas.find(n => n.id === id);
-            if (nota) {
-                document.getElementById('titulo-nota').value = nota.titulo;
-                document.getElementById('conteudo-nota').value = nota.conteudo;
-                removerNota(id);
+            if (confirm('Tem certeza que deseja remover esta anotação?')) {
+                appData.notas = appData.notas.filter(n => n.id !== id);
+                atualizarListaNotas();
+                criarNotificacao('Anotação removida!');
             }
         }
 
-        function atualizarNotas() {
+        function atualizarListaNotas() {
             const lista = document.getElementById('lista-notas');
-            lista.innerHTML = '';
             
-            appState.notas.forEach(nota => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerHTML = `
-                    <h3>${nota.titulo}</h3>
-                    <p style="color: #888; font-size: 0.9em;">${nota.data}</p>
-                    <p style="margin: 10px 0; max-height: 100px; overflow-y: auto;">${nota.conteudo}</p>
-                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                        <button onclick="editarNota(${nota.id})" 
-                                style="background: #3498db; padding: 5px 10px;">✏️</button>
-                        <button onclick="removerNota(${nota.id})" 
-                                style="background: #e74c3c; padding: 5px 10px;">🗑️</button>
+            if (appData.notas.length === 0) {
+                lista.innerHTML = '<p style="text-align: center; color: #888; margin-top: 30px;">Nenhuma anotação salva</p>';
+                return;
+            }
+            
+            lista.innerHTML = appData.notas.map(nota => `
+                <div class="note-card">
+                    <div class="note-header">
+                        <div class="note-title">${nota.titulo}</div>
+                        <div class="note-date">${nota.data}</div>
                     </div>
-                `;
-                lista.appendChild(card);
-            });
-            
-            if (appState.notas.length === 0) {
-                lista.innerHTML = '<p style="text-align: center; color: #888;">Nenhuma nota salva</p>';
-            }
-        }
-
-        // === CALCULADORA DE DANO ===
-        function calcularDano() {
-            const formula = document.getElementById('formula-dano').value.trim();
-            if (!formula) return;
-            
-            try {
-                const resultado = processarFormulaDano(formula);
-                document.getElementById('resultado-dano').innerHTML = 
-                    `<strong>${formula}: ${resultado.detalhes} = ${resultado.total}</strong>`;
-            } catch (e) {
-                document.getElementById('resultado-dano').innerHTML = 
-                    '<span style="color: #e74c3c;">Fórmula inválida!</span>';
-            }
-        }
-
-        function usarFormula(formula) {
-            document.getElementById('formula-dano').value = formula;
-            calcularDano();
-        }
-
-        function processarFormulaDano(formula) {
-            // Remove espaços e converte para minúsculo
-            formula = formula.replace(/\s/g, '').toLowerCase();
-            
-            let total = 0;
-            let detalhes = [];
-            
-            // Processa dados (ex: 2d6, 1d8, etc.)
-            const dadosRegex = /(\d*)d(\d+)/g;
-            let match;
-            let formulaProcessada = formula;
-            
-            while ((match = dadosRegex.exec(formula)) !== null) {
-                const numDados = parseInt(match[1]) || 1;
-                const ladosDado = parseInt(match[2]);
-                let somaDados = 0;
-                let resultadosDados = [];
-                
-                for (let i = 0; i < numDados; i++) {
-                    const resultado = Math.floor(Math.random() * ladosDado) + 1;
-                    resultadosDados.push(resultado);
-                    somaDados += resultado;
-                }
-                
-                detalhes.push(`${numDados}d${ladosDado}[${resultadosDados.join(',')}]`);
-                formulaProcessada = formulaProcessada.replace(match[0], somaDados);
-                total += somaDados;
-            }
-            
-            // Processa modificadores (+ ou -)
-            const modRegex = /([+-]\d+)/g;
-            let modMatch;
-            while ((modMatch = modRegex.exec(formula)) !== null) {
-                const mod = parseInt(modMatch[1]);
-                total += mod;
-                detalhes.push(modMatch[1]);
-            }
-            
-            return {
-                total: total,
-                detalhes: detalhes.join(' ')
-            };
+                    <div class="note-content">${nota.conteudo}</div>
+                    <div class="note-actions">
+                        <button class="edit-btn" onclick="editarNota(${nota.id})">✏️ Editar</button>
+                        <button class="delete-btn" onclick="removerNota(${nota.id})">🗑️ Remover</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // === NOTIFICAÇÕES ===
@@ -966,10 +629,12 @@
             notificacao.className = "notification";
             notificacao.innerHTML = `
                 <span>${texto}</span>
-                <button onclick="fecharNotificacao(this)" style="background: none; border: none; color: #fff; margin-left: 10px; cursor: pointer;">✕</button>
+                <button onclick="fecharNotificacao(this)" style="background: none; border: none; color: #fff; margin-left: 10px; cursor: pointer; font-size: 1.2rem;">×</button>
             `;
+            
             document.getElementById("notificacoes").appendChild(notificacao);
 
+            // Remove automaticamente após 4 segundos
             setTimeout(() => {
                 if (notificacao.parentElement) {
                     notificacao.style.animation = "slideOut 0.5s forwards";
@@ -992,8 +657,18 @@
             }, 500);
         }
 
-        // Salvar automaticamente a cada mudança
-        setInterval(salvarDados, 5000);
+        // Fechar dropdown quando clicar fora
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.preset-dropdown');
+            const list = document.getElementById('preset-list');
+            
+            if (dropdown && !dropdown.contains(event.target)) {
+                list.classList.remove('show');
+            }
+        });
+
+        // Salvar dados periodicamente (a cada 30 segundos)
+        setInterval(salvarDados, 30000);
     </script>
 </body>
 </html>
