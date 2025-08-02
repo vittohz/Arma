@@ -13,10 +13,18 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50, #34495e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             color: #ffffff;
             overflow-x: hidden;
             min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -30,48 +38,66 @@
         h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1s ease-in-out;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            animation: titlePulse 3s ease-in-out infinite;
             text-align: center;
+            background: linear-gradient(45deg, #4CAF50, #45a049, #2196F3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
         h2 {
             font-size: 2rem;
             margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
             color: #4CAF50;
         }
 
         .main-menu, .app-container {
             text-align: center;
-            padding: 30px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-            animation: fadeIn 1s ease-in-out;
-            backdrop-filter: blur(10px);
-            max-width: 800px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            animation: containerFloat 6s ease-in-out infinite;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 900px;
             width: 100%;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
 
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
         }
 
         .menu-button {
-            padding: 20px;
-            font-size: 1.2rem;
-            background: linear-gradient(45deg, #333, #555);
+            padding: 25px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #333, #555, #444);
+            background-size: 200% 200%;
             color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .menu-button:before {
@@ -81,8 +107,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
         }
 
         .menu-button:hover:before {
@@ -90,156 +116,306 @@
         }
 
         .menu-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            background-position: 100% 100%;
+        }
+
+        .menu-button:active {
+            transform: translateY(-4px) scale(0.98);
         }
 
         .back-button {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 2rem;
+            top: 25px;
+            left: 25px;
+            font-size: 2.5rem;
             cursor: pointer;
-            background: rgba(255,255,255,0.1);
-            padding: 10px 15px;
+            background: rgba(255,255,255,0.15);
+            padding: 15px 20px;
             border-radius: 50%;
-            transition: all 0.3s;
+            transition: all 0.4s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .back-button:hover {
-            background: rgba(255,255,255,0.2);
-            transform: scale(1.1);
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.15) rotate(-10deg);
         }
 
         /* Contador de Tiros */
         .contador {
-            font-size: 3rem;
-            margin: 20px 0;
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 30px 0;
             animation: fadeIn 1.5s ease-in-out;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .arma-display {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .button-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
 
         button {
-            font-size: 1rem;
-            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 15px 30px;
             cursor: pointer;
             background: linear-gradient(45deg, #333, #555);
             color: #fff;
             border: none;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-fire {
+            background: linear-gradient(45deg, #FF6B6B, #FF5722) !important;
+        }
+
+        .btn-reload {
+            background: linear-gradient(45deg, #4CAF50, #45a049) !important;
+        }
+
+        .btn-burst {
+            background: linear-gradient(45deg, #FF9800, #F57C00) !important;
+        }
+
+        .btn-reset {
+            background: linear-gradient(45deg, #9E9E9E, #757575) !important;
         }
 
         .input-container {
-            margin: 20px 0;
+            margin: 30px 0;
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
             align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 500;
+            color: #4CAF50;
         }
 
         input[type="number"], input[type="text"], select {
-            font-size: 1rem;
-            padding: 8px;
-            border: 1px solid #555;
-            background-color: #222;
+            font-size: 1.1rem;
+            padding: 12px;
+            border: 2px solid #555;
+            background-color: rgba(0, 0, 0, 0.5);
             color: #fff;
-            border-radius: 5px;
+            border-radius: 8px;
             text-align: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Status da munição */
+        .ammo-status {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 20px;
+        }
+
+        .ammo-bar {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ammo-fill {
+            height: 100%;
+            transition: width 0.4s ease;
+            border-radius: 15px;
+        }
+
+        .clip-fill {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+        }
+
+        .reserve-fill {
+            background: linear-gradient(90deg, #2196F3, #1976D2);
+        }
+
+        .ammo-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
         /* Anotações */
         .note-input-area {
-            margin: 20px 0;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .note-input-area input {
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .note-input-area textarea {
             width: 100%;
             height: 150px;
-            background: #222;
+            background: rgba(0, 0, 0, 0.5);
             color: #fff;
-            border: 1px solid #555;
-            border-radius: 5px;
-            padding: 10px;
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 15px;
             resize: vertical;
             font-family: Arial, sans-serif;
-        }
-
-        .notes-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-
-        .note-card {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: left;
+            font-size: 1rem;
+            line-height: 1.5;
             transition: all 0.3s;
         }
 
+        .note-input-area textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .notes-list {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 30px;
+            padding-right: 10px;
+        }
+
+        .notes-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .notes-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .notes-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .note-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            transition: all 0.4s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
         .note-card:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
         .note-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .note-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #4CAF50;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .note-date {
-            color: #888;
+            color: #aaa;
             font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 15px;
         }
 
         .note-content {
-            max-height: 100px;
+            max-height: 120px;
             overflow-y: auto;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            margin-bottom: 15px;
+            line-height: 1.6;
             white-space: pre-wrap;
+            color: #e0e0e0;
         }
 
         .note-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
+            flex-wrap: wrap;
         }
 
         .note-actions button {
-            padding: 5px 10px;
-            font-size: 0.9rem;
+            padding: 8px 16px;
+            font-size: 0.95rem;
         }
 
         .edit-btn {
@@ -250,23 +426,123 @@
             background: linear-gradient(45deg, #e74c3c, #c0392b) !important;
         }
 
+        /* Preset */
+        .preset-dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .preset-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #555;
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 200px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
+        }
+
+        .preset-list.show {
+            display: block;
+            animation: dropdownSlide 0.3s ease-out;
+        }
+
+        @keyframes dropdownSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .preset-list button {
+            display: block;
+            width: 100%;
+            margin: 8px 0;
+            padding: 12px 16px;
+            background: linear-gradient(45deg, #444, #666);
+            border: 1px solid #555;
+            transition: all 0.3s;
+        }
+
+        .preset-list button:hover {
+            background: linear-gradient(45deg, #555, #777);
+            transform: translateX(5px);
+        }
+
         /* Notificações */
         .notification {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             background: linear-gradient(45deg, #333, #555);
             color: #fff;
-            padding: 15px 20px;
-            border-radius: 10px;
-            animation: slideIn 0.5s ease-in-out;
-            max-width: 300px;
+            padding: 18px 25px;
+            border-radius: 12px;
+            animation: slideIn 0.5s ease-out;
+            max-width: 350px;
             z-index: 1000;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.success {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .notification.warning {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+        }
+
+        /* Estatísticas */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 5px;
         }
 
         /* Animações */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -280,48 +556,33 @@
             to { transform: translateX(100%); }
         }
 
-        /* Preset */
-        .preset-dropdown {
-            position: relative;
-            display: inline-block;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        .preset-list {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #222;
-            border: 1px solid #555;
-            border-radius: 8px;
-            padding: 10px;
-            min-width: 150px;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .preset-list.show {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .preset-list button {
-            display: block;
-            width: 100%;
-            margin: 5px 0;
-            padding: 8px 12px;
-            background: #333;
-            border: 1px solid #555;
+        .pulse {
+            animation: pulse 0.6s ease-in-out;
         }
 
         /* Responsivo */
         @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .contador { font-size: 2rem; }
-            .button-container { flex-direction: column; }
+            h1 { font-size: 2.5rem; }
+            .contador { font-size: 2.5rem; }
+            .button-container { flex-direction: column; align-items: center; }
             .input-container { flex-direction: column; }
             .menu-grid { grid-template-columns: 1fr; }
+            .app-container { padding: 25px; }
+            .ammo-status { flex-direction: column; gap: 10px; }
+            .note-header { flex-direction: column; align-items: flex-start; }
+            .note-actions { justify-content: flex-start; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 10px; }
+            h1 { font-size: 2rem; }
+            .contador { font-size: 2rem; }
+            button { padding: 12px 20px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -341,34 +602,68 @@
             <span class="back-button" onclick="backToMainMenu()">←</span>
             <h1>🔫 Contador de Tiros</h1>
 
+            <div class="arma-display" id="arma">Vazio</div>
+
             <div class="contador">
                 <span id="contador-atual">0</span>/<span id="maximo">0</span>
-                <p id="arma">Vazio</p>
+            </div>
+
+            <!-- Barras de Status -->
+            <div class="ammo-status">
+                <div class="ammo-bar">
+                    <div class="ammo-fill clip-fill" id="clip-bar" style="width: 0%;"></div>
+                    <div class="ammo-text">Pente: <span id="clip-text">0/0</span></div>
+                </div>
+                <div class="ammo-bar">
+                    <div class="ammo-fill reserve-fill" id="reserve-bar" style="width: 0%;"></div>
+                    <div class="ammo-text">Reserva: <span id="reserve-text">0</span></div>
+                </div>
             </div>
 
             <div class="button-container">
-                <button onclick="decrementar()">Atirar</button>
-                <button id="rajada-button" onclick="rajada()" style="display:none;">Rajada</button>
-                <button onclick="restaurar()">Recarregar</button>
-                <button onclick="zerar()">Zerar</button>
+                <button class="btn-fire" onclick="decrementar()">🔥 Atirar</button>
+                <button class="btn-burst" id="rajada-button" onclick="rajada()" style="display:none;">💥 Rajada</button>
+                <button class="btn-reload" onclick="restaurar()">🔄 Recarregar</button>
+                <button class="btn-reset" onclick="zerar()">🗑️ Zerar</button>
             </div>
 
             <div class="input-container">
-                <label>Munições no Pente:</label>
-                <input type="number" id="valor-atual" value="0" min="0">
-                <label>Cartuchos:</label>
-                <input type="number" id="valor-maximo" value="0" min="0">
-                <button onclick="atualizarValores()">Atualizar</button>
+                <div class="input-group">
+                    <label>Munições no Pente</label>
+                    <input type="number" id="valor-atual" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label>Cartuchos Reserva</label>
+                    <input type="number" id="valor-maximo" value="0" min="0">
+                </div>
+                <button onclick="atualizarValores()">✓ Atualizar</button>
+            </div>
+
+            <!-- Estatísticas -->
+            <div class="stats-container" id="stats-container">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-shots">0</div>
+                    <div class="stat-label">Tiros Dados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="total-reloads">0</div>
+                    <div class="stat-label">Recargas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="current-session">0</div>
+                    <div class="stat-label">Sessão Atual</div>
+                </div>
             </div>
 
             <div class="preset-dropdown">
-                <button onclick="togglePresetList()">Presets de Armas</button>
+                <button onclick="togglePresetList()">⚙️ Presets de Armas</button>
                 <div class="preset-list" id="preset-list">
-                    <button onclick="aplicarPreset('Pistola', 12, 40, 12)">Pistola</button>
-                    <button onclick="aplicarPreset('Revolver', 6, 40, 6)">Revolver</button>
-                    <button onclick="aplicarPreset('Submetralhadora', 30, 120, 30)">Submetralhadora</button>
-                    <button onclick="aplicarPreset('Rifle', 8, 32, 8)">Rifle</button>
-                    <button onclick="aplicarPreset('Shotgun', 6, 24, 6)">Shotgun</button>
+                    <button onclick="aplicarPreset('Pistola', 12, 40, 12)">🔫 Pistola</button>
+                    <button onclick="aplicarPreset('Revolver', 6, 40, 6)">🎯 Revolver</button>
+                    <button onclick="aplicarPreset('Submetralhadora', 30, 120, 30)">🔥 Submetralhadora</button>
+                    <button onclick="aplicarPreset('Rifle', 8, 32, 8)">🎯 Rifle</button>
+                    <button onclick="aplicarPreset('Shotgun', 6, 24, 6)">💥 Shotgun</button>
+                    <button onclick="aplicarPreset('Rifle de Precisão', 5, 20, 5)">🎯 Sniper</button>
                 </div>
             </div>
         </div>
@@ -379,9 +674,31 @@
             <h1>📝 Anotações</h1>
             
             <div class="note-input-area">
-                <input type="text" id="titulo-nota" placeholder="Título da anotação">
-                <textarea id="conteudo-nota" placeholder="Escreva suas anotações aqui..."></textarea>
-                <button onclick="salvarNota()" style="width: 100%; margin-top: 10px;">Salvar Anotação</button>
+                <input type="text" id="titulo-nota" placeholder="📌 Título da anotação">
+                <textarea id="conteudo-nota" placeholder="✍️ Escreva suas anotações aqui...
+
+💡 Dicas:
+• Use para anotar eventos importantes
+• Registre NPCs e locais
+• Acompanhe missões e objetivos
+• Anote regras específicas da mesa"></textarea>
+                <button onclick="salvarNota()" style="width: 100%; margin-top: 15px;">💾 Salvar Anotação</button>
+            </div>
+
+            <!-- Estatísticas das Notas -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-notes">0</div>
+                    <div class="stat-label">Total de Notas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="notes-today">0</div>
+                    <div class="stat-label">Hoje</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="notes-words">0</div>
+                    <div class="stat-label">Palavras</div>
+                </div>
             </div>
 
             <div class="notes-list" id="lista-notas">
@@ -399,7 +716,12 @@
                 atual: 0,
                 maximo: 0,
                 capacidade: 0,
-                arma: 'Vazio'
+                arma: 'Vazio',
+                stats: {
+                    totalShots: 0,
+                    totalReloads: 0,
+                    sessionShots: 0
+                }
             },
             notas: []
         };
@@ -426,13 +748,15 @@
             
             if (mode === 'contador') {
                 atualizarDisplayContador();
+                atualizarStats();
             } else if (mode === 'notas') {
                 atualizarListaNotas();
+                atualizarStatsNotas();
             }
         }
 
         function backToMainMenu() {
-            salvarDados(); // Salva ao voltar pro menu
+            salvarDados();
             document.querySelectorAll('.app-container').forEach(app => {
                 app.style.display = 'none';
             });
@@ -444,31 +768,42 @@
             try {
                 const dados = JSON.stringify(appData);
                 localStorage.setItem('rpg-vitao-data', dados);
-                console.log('Dados salvos no navegador!');
+                console.log('✅ Dados salvos!');
             } catch (e) {
-                console.log('Erro ao salvar dados:', e);
-                // Fallback: salvar na memória
+                console.log('❌ Erro ao salvar:', e);
                 window.gameData = JSON.stringify(appData);
             }
         }
 
         function carregarDados() {
             try {
-                // Tenta carregar do localStorage primeiro
                 const dadosSalvos = localStorage.getItem('rpg-vitao-data');
                 if (dadosSalvos) {
-                    appData = JSON.parse(dadosSalvos);
-                    console.log('Dados carregados do navegador!');
+                    const dadosCarregados = JSON.parse(dadosSalvos);
+                    
+                    // Merge com estrutura padrão para compatibilidade
+                    appData = {
+                        contador: {
+                            ...appData.contador,
+                            ...dadosCarregados.contador,
+                            stats: {
+                                ...appData.contador.stats,
+                                ...dadosCarregados.contador?.stats
+                            }
+                        },
+                        notas: dadosCarregados.notas || []
+                    };
+                    
+                    console.log('✅ Dados carregados!');
                     return;
                 }
                 
-                // Fallback: carregar da memória
                 if (window.gameData) {
                     appData = JSON.parse(window.gameData);
-                    console.log('Dados carregados da memória!');
+                    console.log('✅ Dados da memória carregados!');
                 }
             } catch (e) {
-                console.log('Erro ao carregar dados, usando padrão:', e);
+                console.log('❌ Erro ao carregar, usando padrão:', e);
             }
         }
 
@@ -479,66 +814,129 @@
             document.getElementById("arma").textContent = appData.contador.arma;
             document.title = `${appData.contador.arma} | ${appData.contador.atual}/${appData.contador.maximo}`;
             
-            // Atualiza os inputs também
+            // Atualiza inputs
             document.getElementById("valor-atual").value = appData.contador.atual;
             document.getElementById("valor-maximo").value = appData.contador.maximo;
+            
+            // Atualiza barras de status
+            atualizarBarrasStatus();
+        }
+
+        function atualizarBarrasStatus() {
+            // Barra do pente
+            const clipPercent = appData.contador.capacidade > 0 ? 
+                (appData.contador.atual / appData.contador.capacidade) * 100 : 0;
+            
+            // Barra da reserva (assumindo máximo de 200 como referência)
+            const reservePercent = appData.contador.maximo > 0 ? 
+                Math.min((appData.contador.maximo / 200) * 100, 100) : 0;
+            
+            document.getElementById('clip-bar').style.width = clipPercent + '%';
+            document.getElementById('reserve-bar').style.width = reservePercent + '%';
+            
+            document.getElementById('clip-text').textContent = 
+                `${appData.contador.atual}/${appData.contador.capacidade}`;
+            document.getElementById('reserve-text').textContent = appData.contador.maximo;
+        }
+
+        function atualizarStats() {
+            const stats = appData.contador.stats;
+            document.getElementById('total-shots').textContent = stats.totalShots || 0;
+            document.getElementById('total-reloads').textContent = stats.totalReloads || 0;
+            document.getElementById('current-session').textContent = stats.sessionShots || 0;
         }
 
         function decrementar() {
             if (appData.contador.atual > 0) {
                 appData.contador.atual--;
+                appData.contador.stats.totalShots = (appData.contador.stats.totalShots || 0) + 1;
+                appData.contador.stats.sessionShots = (appData.contador.stats.sessionShots || 0) + 1;
+                
                 atualizarDisplayContador();
+                atualizarStats();
+                
+                // Adiciona efeito visual
+                document.getElementById('contador-atual').classList.add('pulse');
+                setTimeout(() => {
+                    document.getElementById('contador-atual').classList.remove('pulse');
+                }, 600);
+                
                 if (appData.contador.atual === 0) {
-                    criarNotificacao("Sem munição no pente!");
+                    criarNotificacao("⚠️ Sem munição no pente!", 'warning');
+                } else if (appData.contador.atual <= 3) {
+                    criarNotificacao(`🔴 Apenas ${appData.contador.atual} tiros restantes!`, 'warning');
                 }
             } else {
-                criarNotificacao("Pente vazio!");
+                criarNotificacao("❌ Pente vazio!", 'error');
             }
         }
 
         function rajada() {
             if (appData.contador.atual > 0) {
-                const tiros = Math.min(appData.contador.atual, 10);
+                const tiros = Math.min(appData.contador.atual, Math.floor(Math.random() * 5) + 3); // 3-7 tiros
                 appData.contador.atual -= tiros;
+                appData.contador.stats.totalShots = (appData.contador.stats.totalShots || 0) + tiros;
+                appData.contador.stats.sessionShots = (appData.contador.stats.sessionShots || 0) + tiros;
+                
                 atualizarDisplayContador();
-                criarNotificacao(`Rajada de ${tiros} tiros!`);
+                atualizarStats();
+                
+                criarNotificacao(`💥 Rajada de ${tiros} tiros!`, 'success');
+                
                 if (appData.contador.atual === 0) {
-                    criarNotificacao("Pente vazio após a rajada!");
+                    setTimeout(() => {
+                        criarNotificacao("⚠️ Pente vazio após a rajada!", 'warning');
+                    }, 1000);
                 }
             } else {
-                criarNotificacao("Pente vazio!");
+                criarNotificacao("❌ Pente vazio!", 'error');
             }
         }
 
         function restaurar() {
+            if (appData.contador.maximo <= 0) {
+                criarNotificacao("❌ Sem munição de reserva!", 'error');
+                return;
+            }
+            
             const falta = appData.contador.capacidade - appData.contador.atual;
             const recarga = Math.min(falta, appData.contador.maximo);
-            appData.contador.atual += recarga;
-            appData.contador.maximo -= recarga;
-            atualizarDisplayContador();
             
             if (recarga > 0) {
-                criarNotificacao(`Recarregado com ${recarga} munições!`);
+                appData.contador.atual += recarga;
+                appData.contador.maximo -= recarga;
+                appData.contador.stats.totalReloads = (appData.contador.stats.totalReloads || 0) + 1;
+                
+                atualizarDisplayContador();
+                atualizarStats();
+                
+                criarNotificacao(`🔄 Recarregado com ${recarga} munições!`, 'success');
             } else {
-                criarNotificacao("Sem munição para recarregar!");
+                criarNotificacao("✅ Pente já está cheio!", 'warning');
             }
         }
 
         function zerar() {
-            appData.contador.atual = 0;
-            appData.contador.maximo = 0;
-            atualizarDisplayContador();
-            criarNotificacao("Contador zerado!");
+            if (confirm('🗑️ Tem certeza que deseja zerar o contador?')) {
+                appData.contador.atual = 0;
+                appData.contador.maximo = 0;
+                appData.contador.stats.sessionShots = 0;
+                
+                atualizarDisplayContador();
+                atualizarStats();
+                criarNotificacao("🗑️ Contador zerado!", 'success');
+            }
         }
 
         function atualizarValores() {
             const novoAtual = parseInt(document.getElementById("valor-atual").value) || 0;
             const novoMaximo = parseInt(document.getElementById("valor-maximo").value) || 0;
             
-            appData.contador.atual = novoAtual;
-            appData.contador.maximo = novoMaximo;
+            appData.contador.atual = Math.max(0, novoAtual);
+            appData.contador.maximo = Math.max(0, novoMaximo);
+            
             atualizarDisplayContador();
-            criarNotificacao("Valores atualizados!");
+            criarNotificacao("✅ Valores atualizados!", 'success');
         }
 
         function togglePresetList() {
@@ -548,6 +946,7 @@
 
         function aplicarPreset(nome, atual, max, cap) {
             appData.contador = {
+                ...appData.contador,
                 arma: nome,
                 atual: atual,
                 maximo: max,
@@ -556,13 +955,14 @@
             
             atualizarDisplayContador();
             
-            // Mostra botão de rajada apenas para submetralhadora
+            // Mostra botão de rajada apenas para armas automáticas
             const rajadaButton = document.getElementById("rajada-button");
-            rajadaButton.style.display = nome === 'Submetralhadora' ? 'inline-block' : 'none';
+            const armasAutomaticas = ['Submetralhadora'];
+            rajadaButton.style.display = armasAutomaticas.includes(nome) ? 'inline-block' : 'none';
             
             // Fecha o dropdown
             document.getElementById("preset-list").classList.remove('show');
-            criarNotificacao(`${nome} equipada!`);
+            criarNotificacao(`🔫 ${nome} equipada!`, 'success');
         }
 
         // === ANOTAÇÕES ===
@@ -571,7 +971,7 @@
             const conteudo = document.getElementById('conteudo-nota').value.trim();
             
             if (!titulo && !conteudo) {
-                criarNotificacao('Adicione um título ou conteúdo!');
+                criarNotificacao('❌ Adicione um título ou conteúdo!', 'error');
                 return;
             }
             
@@ -579,17 +979,19 @@
                 id: Date.now(),
                 titulo: titulo || 'Sem título',
                 conteudo: conteudo || '',
-                data: new Date().toLocaleString('pt-BR')
+                data: new Date().toLocaleString('pt-BR'),
+                dataISO: new Date().toISOString()
             };
             
-            appData.notas.unshift(nota); // Adiciona no início
+            appData.notas.unshift(nota);
             
             // Limpa os campos
             document.getElementById('titulo-nota').value = '';
             document.getElementById('conteudo-nota').value = '';
             
             atualizarListaNotas();
-            criarNotificacao('Anotação salva!');
+            atualizarStatsNotas();
+            criarNotificacao('📝 Anotação salva!', 'success');
         }
 
         function editarNota(id) {
@@ -598,19 +1000,24 @@
                 document.getElementById('titulo-nota').value = nota.titulo;
                 document.getElementById('conteudo-nota').value = nota.conteudo;
                 
-                // Remove a nota da lista (será re-adicionada quando salvar)
+                // Remove a nota da lista
                 appData.notas = appData.notas.filter(n => n.id !== id);
                 atualizarListaNotas();
+                atualizarStatsNotas();
                 
-                criarNotificacao('Editando anotação...');
+                criarNotificacao('✏️ Editando anotação...', 'warning');
+                
+                // Scroll para o topo
+                document.getElementById('titulo-nota').focus();
             }
         }
 
         function removerNota(id) {
-            if (confirm('Tem certeza que deseja remover esta anotação?')) {
+            if (confirm('🗑️ Tem certeza que deseja remover esta anotação?')) {
                 appData.notas = appData.notas.filter(n => n.id !== id);
                 atualizarListaNotas();
-                criarNotificacao('Anotação removida!');
+                atualizarStatsNotas();
+                criarNotificacao('🗑️ Anotação removida!', 'success');
             }
         }
 
@@ -618,12 +1025,18 @@
             const lista = document.getElementById('lista-notas');
             
             if (appData.notas.length === 0) {
-                lista.innerHTML = '<p style="text-align: center; color: #888; margin-top: 30px;">Nenhuma anotação salva</p>';
+                lista.innerHTML = `
+                    <div style="text-align: center; color: #888; margin-top: 50px; padding: 40px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">📝</div>
+                        <h3>Nenhuma anotação ainda</h3>
+                        <p>Comece criando sua primeira anotação acima!</p>
+                    </div>
+                `;
                 return;
             }
             
-            lista.innerHTML = appData.notas.map(nota => `
-                <div class="note-card">
+            lista.innerHTML = appData.notas.map((nota, index) => `
+                <div class="note-card" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s both;">
                     <div class="note-header">
                         <div class="note-title">${nota.titulo}</div>
                         <div class="note-date">${nota.data}</div>
@@ -637,18 +1050,35 @@
             `).join('');
         }
 
+        function atualizarStatsNotas() {
+            const totalNotas = appData.notas.length;
+            const hoje = new Date().toDateString();
+            const notasHoje = appData.notas.filter(nota => 
+                new Date(nota.dataISO || nota.data).toDateString() === hoje
+            ).length;
+            
+            const totalPalavras = appData.notas.reduce((total, nota) => {
+                return total + (nota.conteudo.split(/\s+/).filter(word => word.length > 0).length);
+            }, 0);
+            
+            document.getElementById('total-notes').textContent = totalNotas;
+            document.getElementById('notes-today').textContent = notasHoje;
+            document.getElementById('notes-words').textContent = totalPalavras;
+        }
+
         // === NOTIFICAÇÕES ===
-        function criarNotificacao(texto) {
+        function criarNotificacao(texto, tipo = 'default') {
             const notificacao = document.createElement("div");
-            notificacao.className = "notification";
+            notificacao.className = `notification ${tipo}`;
             notificacao.innerHTML = `
                 <span>${texto}</span>
-                <button onclick="fecharNotificacao(this)" style="background: none; border: none; color: #fff; margin-left: 10px; cursor: pointer; font-size: 1.2rem;">×</button>
+                <button onclick="fecharNotificacao(this)" 
+                        style="background: none; border: none; color: #fff; margin-left: 15px; cursor: pointer; font-size: 1.4rem; opacity: 0.8;">×</button>
             `;
             
             document.getElementById("notificacoes").appendChild(notificacao);
 
-            // Remove automaticamente após 4 segundos
+            // Remove automaticamente após 5 segundos
             setTimeout(() => {
                 if (notificacao.parentElement) {
                     notificacao.style.animation = "slideOut 0.5s forwards";
@@ -658,7 +1088,7 @@
                         }
                     }, 500);
                 }
-            }, 4000);
+            }, 5000);
         }
 
         function fecharNotificacao(botao) {
@@ -671,6 +1101,8 @@
             }, 500);
         }
 
+        // === UTILITÁRIOS ===
+        
         // Fechar dropdown quando clicar fora
         document.addEventListener('click', function(event) {
             const dropdown = document.querySelector('.preset-dropdown');
@@ -681,8 +1113,53 @@
             }
         });
 
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(event) {
+            // Apenas quando não estiver digitando
+            if (event.target.tagName.toLowerCase() === 'input' || 
+                event.target.tagName.toLowerCase() === 'textarea') {
+                return;
+            }
+            
+            // Atalhos para o contador
+            if (document.getElementById('contador-app').style.display !== 'none') {
+                switch(event.key.toLowerCase()) {
+                    case ' ': // Espaço para atirar
+                        event.preventDefault();
+                        decrementar();
+                        break;
+                    case 'r': // R para recarregar
+                        event.preventDefault();
+                        restaurar();
+                        break;
+                    case 'f': // F para rajada
+                        event.preventDefault();
+                        if (document.getElementById('rajada-button').style.display !== 'none') {
+                            rajada();
+                        }
+                        break;
+                }
+            }
+        });
+
         // Salvar dados periodicamente (a cada 30 segundos)
         setInterval(salvarDados, 30000);
+
+        // Resetar estatísticas da sessão quando carregar a página
+        window.addEventListener('load', function() {
+            if (appData.contador.stats) {
+                appData.contador.stats.sessionShots = 0;
+            }
+        });
+
+        // Adicionar som de clique (opcional - descomente se quiser)
+        /*
+        function playClickSound() {
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZidrzxHQlBSuEzvLZiTYIF4nZ88NzJQUrhM3x2Yk2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuDzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN8tiJNQgXidnzw3MlBSuEzvHZiTYIF4nZ88NzJQUrhM3y2Ik2CBiJ2fPDcyUFK4TN');
+            audio.volume = 0.1;
+            audio.play().catch(() => {});
+        }
+        */
     </script>
 </body>
 </html>
