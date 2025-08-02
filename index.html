@@ -873,7 +873,7 @@
 
         function rajada() {
             if (appData.contador.atual > 0) {
-                const tiros = Math.min(appData.contador.atual, Math.floor(Math.random() * 10) + 0); // 3-7 tiros
+                const tiros = Math.min(appData.contador.atual, Math.floor(Math.random() * 0) + 10); // 3-7 tiros
                 appData.contador.atual -= tiros;
                 appData.contador.stats.totalShots = (appData.contador.stats.totalShots || 0) + tiros;
                 appData.contador.stats.sessionShots = (appData.contador.stats.sessionShots || 0) + tiros;
@@ -1163,4 +1163,5 @@
     </script>
 </body>
 </html>
+
 
