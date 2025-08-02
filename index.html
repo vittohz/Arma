@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Putaria 2000</title>
+    <title>Site de RPG - Vitao</title>
     <style>
         * {
             margin: 0;
@@ -329,7 +329,7 @@
     <div class="container">
         <!-- Menu Principal -->
         <div class="main-menu" id="main-menu">
-            <h1>🎲 PUTARIA 2000 🎲</h1>
+            <h1>🎲 Site de RPG do Vitao 🎲</h1>
             <div class="menu-grid">
                 <button class="menu-button" onclick="startApp('contador')">🔫 Contador de Tiros</button>
                 <button class="menu-button" onclick="startApp('notas')">📝 Anotações</button>
@@ -441,20 +441,34 @@
 
         // Sistema de dados
         function salvarDados() {
-            const dados = JSON.stringify(appData);
-            // Como não podemos usar localStorage, vamos simular com uma variável global
-            window.gameData = dados;
-            console.log('Dados salvos!'); // Para debug
+            try {
+                const dados = JSON.stringify(appData);
+                localStorage.setItem('rpg-vitao-data', dados);
+                console.log('Dados salvos no navegador!');
+            } catch (e) {
+                console.log('Erro ao salvar dados:', e);
+                // Fallback: salvar na memória
+                window.gameData = JSON.stringify(appData);
+            }
         }
 
         function carregarDados() {
-            if (window.gameData) {
-                try {
-                    appData = JSON.parse(window.gameData);
-                    console.log('Dados carregados!'); // Para debug
-                } catch (e) {
-                    console.log('Erro ao carregar dados, usando padrão');
+            try {
+                // Tenta carregar do localStorage primeiro
+                const dadosSalvos = localStorage.getItem('rpg-vitao-data');
+                if (dadosSalvos) {
+                    appData = JSON.parse(dadosSalvos);
+                    console.log('Dados carregados do navegador!');
+                    return;
                 }
+                
+                // Fallback: carregar da memória
+                if (window.gameData) {
+                    appData = JSON.parse(window.gameData);
+                    console.log('Dados carregados da memória!');
+                }
+            } catch (e) {
+                console.log('Erro ao carregar dados, usando padrão:', e);
             }
         }
 
